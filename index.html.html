@@ -1,0 +1,2114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Ads Academy — A Complete Metrics Learning Tool</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #F5F1E8;
+    --bg-2: #FBF8F1;
+    --card: #FFFFFF;
+    --ink: #1F1A15;
+    --ink-2: #5E564B;
+    --ink-3: #8A8276;
+    --line: #E5DFD0;
+    --line-2: #EFEADC;
+    --accent: #C6472B;
+    --accent-soft: #F6E5DD;
+    --green: #2F5D3A;
+    --green-soft: #E3EBDF;
+    --amber: #9A6A12;
+    --amber-soft: #F3E9D4;
+    --blue: #1F4D6B;
+    --blue-soft: #DDE8EF;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 16px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* subtle paper-grain background */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+      radial-gradient(ellipse at 20% 0%, rgba(198,71,43,0.06), transparent 60%),
+      radial-gradient(ellipse at 80% 100%, rgba(47,93,58,0.05), transparent 55%);
+    z-index: 0;
+  }
+
+  .app {
+    position: relative;
+    z-index: 1;
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 28px 24px 120px;
+  }
+
+  /* ---------- HEADER ---------- */
+  header.masthead {
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 22px;
+    margin-bottom: 18px;
+  }
+  .brand {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 6px;
+  }
+  .brand .dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--accent);
+    display: inline-block;
+    transform: translateY(-2px);
+  }
+  .brand .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-2);
+  }
+  h1.title {
+    font-family: 'Instrument Serif', serif;
+    font-weight: 400;
+    font-size: clamp(38px, 6vw, 64px);
+    line-height: 1.02;
+    letter-spacing: -0.01em;
+    margin: 4px 0 8px;
+  }
+  h1.title em {
+    font-style: italic;
+    color: var(--accent);
+  }
+  .subtitle {
+    color: var(--ink-2);
+    font-size: 15px;
+    max-width: 620px;
+    margin: 0;
+  }
+
+  /* ---------- STICKY NAV (search + tabs) ---------- */
+  .sticky-nav {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: var(--bg);
+    margin: 0 -24px 24px;
+    padding: 14px 24px 0;
+  }
+
+  /* ---------- SEARCH ---------- */
+  .search-wrap {
+    position: relative;
+    margin-bottom: 10px;
+  }
+  .search-input-wrap { position: relative; }
+  .search-icon-left {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--ink-3);
+    pointer-events: none;
+  }
+  .search-input {
+    width: 100%;
+    padding: 13px 44px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--card);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    color: var(--ink);
+    outline: none;
+    transition: all 0.2s;
+  }
+  .search-input::placeholder { color: var(--ink-3); }
+  .search-input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px var(--accent-soft);
+  }
+  .search-clear {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    border: none;
+    background: var(--bg);
+    color: var(--ink-2);
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    transition: all 0.15s;
+  }
+  .search-clear.show { display: flex; }
+  .search-clear:hover { background: var(--ink); color: var(--bg-2); }
+  .search-results {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    right: 0;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    box-shadow: 0 20px 60px -15px rgba(0,0,0,0.25);
+    max-height: 420px;
+    overflow-y: auto;
+    display: none;
+    z-index: 50;
+  }
+  .search-results.open { display: block; }
+  .search-result {
+    display: block;
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--line-2);
+    cursor: pointer;
+    text-align: left;
+    width: 100%;
+    background: transparent;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    font-family: inherit;
+    color: inherit;
+    transition: background 0.1s;
+  }
+  .search-result:last-child { border-bottom: none; }
+  .search-result:hover,
+  .search-result.selected { background: var(--bg); }
+  .search-result .r-section {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    color: var(--accent);
+    letter-spacing: 0.12em;
+    margin-bottom: 4px;
+  }
+  .search-result .r-title {
+    font-weight: 600;
+    color: var(--ink);
+    font-size: 15px;
+    margin-bottom: 3px;
+  }
+  .search-result .r-preview {
+    color: var(--ink-2);
+    font-size: 13px;
+    line-height: 1.4;
+  }
+  .search-result mark {
+    background: var(--accent-soft);
+    color: var(--accent);
+    padding: 0 2px;
+    border-radius: 2px;
+  }
+  .search-empty {
+    padding: 24px 20px;
+    text-align: center;
+    color: var(--ink-3);
+    font-size: 14px;
+  }
+
+  /* ---------- SECTION DIVIDER (within a tab) ---------- */
+  .section-divider {
+    margin: 40px 0 22px;
+    position: relative;
+    text-align: center;
+  }
+  .section-divider::before {
+    content: '';
+    position: absolute;
+    left: 0; right: 0;
+    top: 17px;
+    height: 1px;
+    background: var(--line);
+    z-index: 0;
+  }
+  .section-divider-label {
+    display: inline-block;
+    background: var(--bg);
+    padding: 0 20px;
+    position: relative;
+    z-index: 1;
+    font-family: 'Instrument Serif', serif;
+    font-weight: 400;
+    font-size: 26px;
+    color: var(--ink);
+    font-style: italic;
+  }
+  .section-divider-note {
+    margin: 10px auto 0;
+    font-size: 13.5px;
+    color: var(--ink-2);
+    max-width: 520px;
+  }
+
+  /* ---------- TABS ---------- */
+  nav.tabs {
+    display: flex;
+    gap: 4px;
+    overflow-x: auto;
+    padding: 4px 0 14px;
+    border-bottom: 1px solid var(--line);
+    scrollbar-width: none;
+  }
+  nav.tabs::-webkit-scrollbar { display: none; }
+  .tab {
+    flex-shrink: 0;
+    padding: 10px 16px;
+    border: 1px solid var(--line);
+    background: var(--card);
+    border-radius: 999px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ink-2);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    white-space: nowrap;
+  }
+  .tab:hover { color: var(--ink); border-color: var(--ink-3); }
+  .tab.active {
+    background: var(--ink);
+    color: var(--bg-2);
+    border-color: var(--ink);
+  }
+
+  /* ---------- SECTIONS ---------- */
+  section.view { display: none; animation: fadeIn 0.3s ease; }
+  section.view.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+
+  .section-head {
+    margin-bottom: 22px;
+  }
+  .section-head .kicker {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+  .section-head h2 {
+    font-family: 'Instrument Serif', serif;
+    font-weight: 400;
+    font-size: clamp(28px, 4vw, 40px);
+    margin: 0 0 8px;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+  }
+  .section-head p {
+    color: var(--ink-2);
+    margin: 0;
+    max-width: 640px;
+  }
+
+  /* ---------- FILTER PILLS ---------- */
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 18px;
+  }
+  .pill {
+    padding: 6px 12px;
+    border: 1px solid var(--line);
+    background: transparent;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink-2);
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .pill:hover { color: var(--ink); border-color: var(--ink-3); }
+  .pill.active {
+    background: var(--ink);
+    color: var(--bg-2);
+    border-color: var(--ink);
+  }
+
+  /* ---------- METRIC GRID ---------- */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 14px;
+  }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 18px;
+    cursor: pointer;
+    transition: all 0.18s ease;
+    text-align: left;
+    font-family: inherit;
+    color: inherit;
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: "";
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: var(--accent);
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform 0.25s ease;
+  }
+  .card:hover {
+    transform: translateY(-2px);
+    border-color: var(--ink-3);
+    box-shadow: 0 6px 20px -10px rgba(31,26,21,0.15);
+  }
+  .card:hover::before { transform: scaleY(1); }
+
+  .card .badge {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    font-weight: 500;
+  }
+  .badge.awareness { background: var(--blue-soft); color: var(--blue); }
+  .badge.engagement { background: var(--amber-soft); color: var(--amber); }
+  .badge.conversion { background: var(--green-soft); color: var(--green); }
+  .badge.revenue { background: var(--accent-soft); color: var(--accent); }
+  .badge.video { background: #EADDEF; color: #6B3A7D; }
+  .badge.amazon { background: #FEF2D5; color: #8C6B14; }
+
+  .card .metric-name {
+    font-family: 'Instrument Serif', serif;
+    font-size: 26px;
+    line-height: 1.1;
+    margin: 0 0 2px;
+  }
+  .card .metric-full {
+    font-size: 12px;
+    color: var(--ink-3);
+    margin-bottom: 10px;
+  }
+  .card .metric-short {
+    font-size: 14px;
+    color: var(--ink-2);
+    margin: 0 0 12px;
+  }
+  .card .formula-peek {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11.5px;
+    color: var(--ink-2);
+    background: var(--bg);
+    padding: 8px 10px;
+    border-radius: 6px;
+    border: 1px solid var(--line-2);
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+  .card .tap-hint {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--ink-3);
+    margin-top: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* ---------- MODAL ---------- */
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(31,26,21,0.45);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    display: none;
+    z-index: 100;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+  .modal-backdrop.open { display: flex; opacity: 1; }
+  .modal {
+    margin: auto;
+    background: var(--bg-2);
+    border-radius: 18px;
+    max-width: 720px;
+    width: calc(100% - 32px);
+    max-height: calc(100vh - 40px);
+    overflow-y: auto;
+    box-shadow: 0 24px 80px -20px rgba(0,0,0,0.35);
+    transform: translateY(10px) scale(0.98);
+    transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .modal-backdrop.open .modal { transform: none; }
+
+  .modal-inner { padding: 28px 32px 32px; }
+  .modal .close {
+    position: sticky;
+    top: 0;
+    float: right;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 50%;
+    width: 34px; height: 34px;
+    font-size: 16px;
+    cursor: pointer;
+    color: var(--ink-2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+  }
+  .modal .close:hover { background: var(--ink); color: var(--bg-2); border-color: var(--ink); }
+
+  .modal h3 {
+    font-family: 'Instrument Serif', serif;
+    font-weight: 400;
+    font-size: 40px;
+    line-height: 1.05;
+    margin: 0 0 4px;
+  }
+  .modal .sub {
+    color: var(--ink-3);
+    font-size: 14px;
+    margin-bottom: 22px;
+  }
+  .modal .def {
+    font-size: 17px;
+    line-height: 1.6;
+    color: var(--ink);
+    border-left: 3px solid var(--accent);
+    padding-left: 16px;
+    margin-bottom: 22px;
+  }
+
+  .block {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin-bottom: 14px;
+  }
+  .block-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin-bottom: 10px;
+  }
+  .formula {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 15px;
+    color: var(--ink);
+    font-weight: 500;
+    line-height: 1.5;
+    word-break: break-word;
+  }
+  .example-scenario { color: var(--ink-2); margin-bottom: 10px; }
+  .example-calc {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    background: var(--bg);
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 1px dashed var(--line);
+    margin-bottom: 10px;
+  }
+  .example-result {
+    background: var(--accent-soft);
+    color: var(--accent);
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+  }
+  .why-text { color: var(--ink-2); }
+  .benchmark {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    padding: 12px 14px;
+    background: var(--green-soft);
+    border-radius: 8px;
+    font-size: 13.5px;
+    color: var(--green);
+  }
+  .benchmark::before { content: "★"; font-size: 14px; }
+
+  /* ---------- LONG-FORM LESSONS (DSP & Sponsored) ---------- */
+  .lesson {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    margin-bottom: 14px;
+    overflow: hidden;
+    scroll-margin-top: 160px;
+  }
+  .lesson summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 18px 22px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+  }
+  .lesson summary::-webkit-details-marker { display: none; }
+  .lesson summary h4 {
+    font-family: 'Instrument Serif', serif;
+    font-weight: 400;
+    font-size: 22px;
+    margin: 0;
+    line-height: 1.15;
+  }
+  .lesson summary .chev {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 18px;
+    color: var(--ink-3);
+    transition: transform 0.2s;
+    flex-shrink: 0;
+  }
+  .lesson[open] summary .chev { transform: rotate(45deg); color: var(--accent); }
+  .lesson summary .preview {
+    font-size: 13.5px;
+    color: var(--ink-2);
+    flex: 1;
+    margin: 0 12px;
+  }
+  @media (max-width: 640px) {
+    .lesson summary { flex-wrap: wrap; }
+    .lesson summary .preview { flex-basis: 100%; margin: 6px 0 0; }
+  }
+  .lesson-body {
+    padding: 4px 22px 22px;
+    color: var(--ink);
+  }
+  .lesson-body p { margin: 0 0 12px; color: var(--ink); line-height: 1.65; }
+  .lesson-body p.muted { color: var(--ink-2); }
+  .lesson-body h5 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    margin: 18px 0 8px;
+  }
+  .lesson-body ul { margin: 0 0 12px; padding-left: 20px; color: var(--ink); }
+  .lesson-body ul li { margin-bottom: 6px; line-height: 1.55; }
+  .lesson-body ul li b { font-weight: 600; color: var(--ink); }
+  .callout {
+    background: var(--bg);
+    border-left: 3px solid var(--accent);
+    padding: 12px 16px;
+    border-radius: 0 8px 8px 0;
+    margin: 14px 0;
+    font-size: 14px;
+    color: var(--ink-2);
+  }
+  .callout b { color: var(--ink); }
+
+  /* flow diagram */
+  .flow {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+    margin: 14px 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+  }
+  .flow .node {
+    background: var(--bg-2);
+    border: 1px solid var(--line);
+    padding: 8px 12px;
+    border-radius: 8px;
+    color: var(--ink);
+  }
+  .flow .arrow { color: var(--ink-3); }
+
+  /* comparison table */
+  .compare {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    font-size: 13.5px;
+  }
+  .compare th, .compare td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--line);
+    text-align: left;
+    vertical-align: top;
+  }
+  .compare th {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    font-weight: 500;
+    background: var(--bg);
+  }
+  .compare td:first-child { font-weight: 600; color: var(--ink); }
+  .compare-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 12px; }
+
+  /* ---------- FORMULAS SECTION ---------- */
+  .formula-list {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  .formula-row {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 16px;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--line-2);
+    align-items: center;
+  }
+  .formula-row:last-child { border-bottom: none; }
+  .formula-row .name {
+    font-family: 'Instrument Serif', serif;
+    font-size: 20px;
+    color: var(--ink);
+  }
+  .formula-row .equation {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13.5px;
+    color: var(--ink-2);
+    word-break: break-word;
+  }
+  @media (max-width: 640px) {
+    .formula-row { grid-template-columns: 1fr; gap: 4px; }
+  }
+
+  /* footer */
+  .footer-note {
+    margin-top: 40px;
+    padding-top: 22px;
+    border-top: 1px solid var(--line);
+    font-size: 12.5px;
+    color: var(--ink-3);
+    text-align: center;
+  }
+  .footer-note em { font-family: 'Instrument Serif', serif; color: var(--accent); font-style: italic; }
+
+</style>
+</head>
+<body>
+<div class="app">
+
+  <header class="masthead">
+    <div class="brand">
+      <span class="dot"></span>
+      <span class="label">ADS ACADEMY · V1</span>
+    </div>
+    <h1 class="title">The complete <em>ads metrics</em> learning tool.</h1>
+    <p class="subtitle">Every metric, every formula, every acronym — explained with real examples. Plus DSP and Sponsored Campaigns, broken down so anyone can understand. Tap any card to dive in.</p>
+  </header>
+
+  <div class="sticky-nav">
+    <div class="search-wrap">
+      <div class="search-input-wrap">
+        <svg class="search-icon-left" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/>
+          <path d="m21 21-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <input type="text" class="search-input" id="search" placeholder="Search any topic — TACOS, Frequency Cap, Audiences, ROAS…" autocomplete="off" />
+        <button class="search-clear" id="search-clear" aria-label="Clear search">✕</button>
+      </div>
+      <div class="search-results" id="search-results" role="listbox"></div>
+    </div>
+
+    <nav class="tabs" role="tablist">
+      <button class="tab active" data-tab="metrics">Metrics</button>
+      <button class="tab" data-tab="dsp">DSP</button>
+      <button class="tab" data-tab="sponsored">Sponsored Ads</button>
+      <button class="tab" data-tab="formulas">Formula Cheat Sheet</button>
+    </nav>
+  </div>
+
+  <!-- ============ METRICS ============ -->
+  <section class="view active" id="metrics">
+    <div class="section-head">
+      <div class="kicker">01 — Metrics</div>
+      <h2>The numbers every advertiser should know.</h2>
+      <p>Grouped by funnel stage — from awareness all the way to revenue. Tap any card to see the formula, a worked example, and why the metric matters.</p>
+    </div>
+
+    <div class="filters" id="metric-filters">
+      <button class="pill active" data-filter="all">All metrics</button>
+      <button class="pill" data-filter="awareness">Awareness</button>
+      <button class="pill" data-filter="engagement">Engagement</button>
+      <button class="pill" data-filter="conversion">Conversion</button>
+      <button class="pill" data-filter="revenue">Revenue</button>
+      <button class="pill" data-filter="video">Video</button>
+      <button class="pill" data-filter="amazon">Amazon / DSP</button>
+    </div>
+
+    <div class="grid" id="metric-grid"></div>
+  </section>
+
+  <!-- ============ DSP ============ -->
+  <section class="view" id="dsp">
+    <div class="section-head">
+      <div class="kicker">02 — DSP</div>
+      <h2>Demand-Side Platforms, demystified.</h2>
+      <p>DSPs are the machines behind programmatic advertising. They let brands buy ad inventory across the open web, apps, streaming TV, and audio — in real time, at scale. Here's how it all fits together.</p>
+    </div>
+    <div id="dsp-lessons"></div>
+  </section>
+
+  <!-- ============ SPONSORED ============ -->
+  <section class="view" id="sponsored">
+    <div class="section-head">
+      <div class="kicker">03 — Sponsored Ads</div>
+      <h2>Sponsored campaigns on retail platforms.</h2>
+      <p>Sponsored Products, Brands, and Display — the CPC-based ad formats that run on retailers like Amazon, Flipkart, and Walmart. Tap into targeting, match types, bidding, and more.</p>
+    </div>
+    <div id="sponsored-lessons"></div>
+  </section>
+
+  <!-- ============ FORMULAS ============ -->
+  <section class="view" id="formulas">
+    <div class="section-head">
+      <div class="kicker">04 — Formulas</div>
+      <h2>Every formula, one place.</h2>
+      <p>Bookmark this page. It's your quick reference for every ad math calculation you'll ever need.</p>
+    </div>
+    <div class="formula-list" id="formula-list"></div>
+  </section>
+
+  <div class="footer-note">
+    Built for marketers, analysts, and curious learners — use the tabs above to navigate. <em>Happy optimizing.</em>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal-backdrop" id="modal">
+  <div class="modal">
+    <div class="modal-inner">
+      <button class="close" id="modal-close" aria-label="Close">✕</button>
+      <div id="modal-content"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* =============================================================
+   DATA — METRICS
+   ============================================================= */
+const metrics = [
+  // ---------- AWARENESS ----------
+  {
+    id: 'impressions', name: 'Impressions', full: 'Total Ad Views', cat: 'awareness',
+    short: 'The number of times your ad was shown to users.',
+    formula: 'Impressions = Count of times ad is served',
+    def: 'An impression is counted every single time your ad is displayed — whether or not the user actually looked at it or interacted with it. It\'s the rawest measure of reach and volume.',
+    scenario: 'Your display banner runs on a news site. Over one day, it\'s shown 20,000 times as different users scroll past the placement.',
+    calc: 'Total ad serves in 24 hours = 20,000',
+    result: 'Impressions = 20,000',
+    why: 'Impressions are the fuel of awareness campaigns. More impressions = more opportunities to be seen. But impressions alone don\'t mean attention — that\'s where Viewability comes in.',
+    benchmark: 'There\'s no "good" number — it depends entirely on your budget and CPM.'
+  },
+  {
+    id: 'reach', name: 'Reach', full: 'Unique People Exposed', cat: 'awareness',
+    short: 'The number of unique people who saw your ad at least once.',
+    formula: 'Reach = Unique users exposed to the ad',
+    def: 'Where Impressions can count the same person multiple times, Reach only counts each person once. It tells you the size of your actual audience.',
+    scenario: 'Your campaign delivers 30,000 impressions. But tracking shows only 10,000 unique users saw it — on average each person saw it 3 times.',
+    calc: '30,000 impressions ÷ 3 average views per person',
+    result: 'Reach = 10,000 unique people',
+    why: 'Reach tells you how broadly your message is spreading. For brand launches, you want high reach. For remarketing, you want repeated frequency over smaller reach.',
+    benchmark: 'Depends on campaign goal. New product launch? Maximize reach. Retargeting? Smaller reach is fine.'
+  },
+  {
+    id: 'frequency', name: 'Frequency', full: 'Avg Impressions Per Person', cat: 'awareness',
+    short: 'How many times, on average, each person saw your ad.',
+    formula: 'Frequency = Impressions ÷ Reach',
+    def: 'Frequency measures how repetitive your ad exposure is. Too low and people forget. Too high and they get annoyed (this is called "ad fatigue").',
+    scenario: 'You delivered 50,000 impressions to a reach of 10,000 unique users over a week.',
+    calc: '50,000 ÷ 10,000 = 5',
+    result: 'Frequency = 5 (each person saw the ad 5 times on average)',
+    why: 'The "rule of 7" says people need to see a message 7 times to remember it — but context matters. Video ads saturate faster; display ads need more repetition.',
+    benchmark: 'Aim for 3–7 per campaign flight for awareness. Above 10 and you\'re likely wasting spend on already-engaged users.'
+  },
+  {
+    id: 'cpm', name: 'CPM', full: 'Cost Per Mille (Per 1,000 Impressions)', cat: 'awareness',
+    short: 'How much it costs to show your ad 1,000 times.',
+    formula: 'CPM = (Ad Spend ÷ Impressions) × 1,000',
+    def: 'CPM is the standard currency of display, video, and OTT advertising. You pay per thousand impressions, regardless of clicks. "Mille" is Latin for thousand.',
+    scenario: 'You spent $500 on a display campaign that delivered 125,000 impressions.',
+    calc: '($500 ÷ 125,000) × 1,000 = $4.00',
+    result: 'CPM = $4.00',
+    why: 'CPM is how you compare the cost of reaching audiences across different publishers and platforms. A premium publisher might charge $15 CPM, while open web might be $1.50 CPM.',
+    benchmark: 'Display: $1–$10. Connected TV: $25–$50. Premium video: $10–$30. Amazon DSP: $3–$10 depending on supply.'
+  },
+  {
+    id: 'viewability', name: 'Viewability', full: 'Viewable Impression Rate', cat: 'awareness',
+    short: 'The % of impressions that were actually visible on screen.',
+    formula: 'Viewability = (Viewable Impressions ÷ Total Impressions) × 100',
+    def: 'Per the MRC (Media Rating Council) standard, a display ad is "viewable" if 50% of its pixels are on-screen for at least 1 second. For video, it\'s 50% of pixels on-screen for 2 seconds.',
+    scenario: 'Your campaign served 100,000 impressions. Verification data shows 72,000 of them met the MRC viewability threshold.',
+    calc: '(72,000 ÷ 100,000) × 100 = 72%',
+    result: 'Viewability = 72%',
+    why: 'An unviewable impression is effectively worthless — nobody saw it. High viewability is the first prerequisite for an ad to do its job.',
+    benchmark: 'Industry average ~70%. Premium inventory targets 80%+. Below 50% is a red flag about your supply quality.'
+  },
+  {
+    id: 'sov', name: 'SOV', full: 'Share of Voice', cat: 'awareness',
+    short: 'Your slice of total advertising activity in your category.',
+    formula: 'SOV = (Your Ad Spend ÷ Total Category Ad Spend) × 100',
+    def: 'SOV measures how loud you are vs competitors. It can be calculated with spend, impressions, or even search-result dominance (e.g., how often you appear for a keyword vs rivals).',
+    scenario: 'In the running-shoes category, the total spend across all brands on Amazon is $1M/month. Your brand spends $150K.',
+    calc: '($150K ÷ $1M) × 100 = 15%',
+    result: 'SOV = 15%',
+    why: 'Share of Voice correlates strongly with long-term market share. If your SOV is higher than your market share, you\'re likely growing. If it\'s lower, you\'re losing ground.',
+    benchmark: 'Should roughly match or exceed your market share in the category for sustained growth.'
+  },
+
+  // ---------- ENGAGEMENT ----------
+  {
+    id: 'clicks', name: 'Clicks', full: 'Total Ad Clicks', cat: 'engagement',
+    short: 'The number of times users clicked your ad.',
+    formula: 'Clicks = Count of user clicks on the ad',
+    def: 'A click is a deliberate action — the user saw the ad, was interested enough to tap or click, and was taken to your landing page or product page.',
+    scenario: 'Your Sponsored Products ad got 40,000 impressions and 800 people clicked through.',
+    calc: 'Clicks recorded in campaign dashboard',
+    result: 'Clicks = 800',
+    why: 'Clicks are the first real signal of interest. They\'re the bridge between impressions (passive) and conversions (action).',
+    benchmark: 'Volume depends entirely on impressions and CTR.'
+  },
+  {
+    id: 'ctr', name: 'CTR', full: 'Click-Through Rate', cat: 'engagement',
+    short: 'The % of people who clicked after seeing your ad.',
+    formula: 'CTR = (Clicks ÷ Impressions) × 100',
+    def: 'CTR is the health check for your creative and targeting. Low CTR often means your ad isn\'t relevant or compelling to the audience you\'re showing it to.',
+    scenario: 'Your ad was shown 50,000 times and got 750 clicks.',
+    calc: '(750 ÷ 50,000) × 100 = 1.5%',
+    result: 'CTR = 1.5%',
+    why: 'CTR is the fastest diagnostic for creative and targeting quality. A poor CTR usually means: bad creative, wrong audience, or both.',
+    benchmark: 'Search ads: 2–5%. Sponsored Products: 0.3–0.5%. Display: 0.05–0.2%. Social: 0.5–1.5%. Context is everything.'
+  },
+  {
+    id: 'cpc', name: 'CPC', full: 'Cost Per Click', cat: 'engagement',
+    short: 'How much you pay, on average, for each click.',
+    formula: 'CPC = Ad Spend ÷ Clicks',
+    def: 'CPC is the pricing model used by most search and sponsored ads. You only pay when someone clicks — not when they merely see the ad.',
+    scenario: 'You spent $600 on a Sponsored Products campaign and got 1,200 clicks.',
+    calc: '$600 ÷ 1,200 = $0.50',
+    result: 'CPC = $0.50',
+    why: 'CPC is the cost side of your click-based economics. Combined with conversion rate and AOV, it tells you if clicks are profitable.',
+    benchmark: 'Amazon SP: $0.30–$2+ depending on category competition. Google Search: $1–$10+. Facebook: $0.50–$3.'
+  },
+  {
+    id: 'engagement-rate', name: 'Engagement Rate', full: 'Interactive Ad Engagement', cat: 'engagement',
+    short: 'The % of exposed users who took any meaningful action.',
+    formula: 'Engagement Rate = (Engagements ÷ Impressions) × 100',
+    def: 'Engagements include likes, shares, comments, expands, video hovers, swipes — any interaction beyond a passive view. The exact definition depends on the platform.',
+    scenario: 'A social video ad got 10,000 impressions and 350 total interactions (likes + shares + comments).',
+    calc: '(350 ÷ 10,000) × 100 = 3.5%',
+    result: 'Engagement Rate = 3.5%',
+    why: 'High engagement is a signal of creative resonance. Platforms like Meta and TikTok also use engagement as a ranking signal, which can lower your CPMs.',
+    benchmark: 'Instagram: 1–3%. TikTok: 5–10%. LinkedIn: 2%. Healthy engagement also reduces your delivery costs.'
+  },
+
+  // ---------- CONVERSION ----------
+  {
+    id: 'conversions', name: 'Conversions', full: 'Completed Actions', cat: 'conversion',
+    short: 'The number of desired actions users took (purchases, signups, leads).',
+    formula: 'Conversions = Count of completed goal actions',
+    def: 'A conversion is whatever you\'ve defined as success — a purchase, a form submission, an app install, a subscription, an add-to-cart. Each campaign needs a clear conversion definition.',
+    scenario: 'Your campaign drove 20,000 clicks, and 400 of those clicks resulted in purchases.',
+    calc: 'Orders tracked via pixel / platform attribution = 400',
+    result: 'Conversions = 400',
+    why: 'Conversions are the ultimate unit of truth. Impressions and clicks feed this number — but conversions pay the bills.',
+    benchmark: 'Depends on funnel. Focus on rate, not volume.'
+  },
+  {
+    id: 'cvr', name: 'CVR', full: 'Conversion Rate', cat: 'conversion',
+    short: 'The % of clicks that turned into conversions.',
+    formula: 'CVR = (Conversions ÷ Clicks) × 100',
+    def: 'CVR measures how well your landing page and offer turn interested visitors into buyers. It\'s purely about post-click experience.',
+    scenario: 'Your campaign got 5,000 clicks and drove 100 purchases.',
+    calc: '(100 ÷ 5,000) × 100 = 2%',
+    result: 'CVR = 2%',
+    why: 'Low CVR means the click was wasted — either the audience wasn\'t right, or your landing page/listing couldn\'t close the deal. It\'s a cheap metric to improve vs lowering CPC.',
+    benchmark: 'eCommerce: 2–4%. Amazon SP: 8–15% (pre-qualified shoppers). B2B lead gen: 5–10%. Landing pages: 3–10%.'
+  },
+  {
+    id: 'cpa', name: 'CPA', full: 'Cost Per Acquisition', cat: 'conversion',
+    short: 'How much you spend to generate one conversion.',
+    formula: 'CPA = Ad Spend ÷ Conversions',
+    def: 'CPA is the true cost of customer acquisition through ads. It rolls up your CPC and CVR into one blended figure.',
+    scenario: 'You spent $2,000 in ads and generated 50 new customer signups.',
+    calc: '$2,000 ÷ 50 = $40',
+    result: 'CPA = $40',
+    why: 'CPA is how you judge if paid acquisition is sustainable. If your CPA is higher than your customer\'s contribution margin, you\'re paying to lose money (unless LTV bails you out).',
+    benchmark: 'Compare to your Customer Lifetime Value (LTV). Healthy CPA:LTV ratio is typically 1:3 or better.'
+  },
+  {
+    id: 'cpo', name: 'CPO', full: 'Cost Per Order', cat: 'conversion',
+    short: 'The ad cost required to generate one order.',
+    formula: 'CPO = Ad Spend ÷ Total Orders',
+    def: 'CPO is CPA specifically applied to eCommerce orders. If a customer places two orders in the attribution window, that\'s two conversions but might still be one acquisition.',
+    scenario: 'A Sponsored Products campaign spent $750 and produced 150 orders.',
+    calc: '$750 ÷ 150 = $5',
+    result: 'CPO = $5',
+    why: 'CPO is useful for repeat-purchase categories (consumables, subscriptions) where you may drive multiple orders from the same customer.',
+    benchmark: 'Should be significantly lower than your product\'s contribution margin per order.'
+  },
+
+  // ---------- REVENUE ----------
+  {
+    id: 'sales', name: 'Sales', full: 'Ad-Attributed Revenue', cat: 'revenue',
+    short: 'Total revenue generated by your advertising.',
+    formula: 'Sales = Sum of ad-attributed purchase value',
+    def: 'Sales is the dollar value of all conversions driven by your campaigns — not just the count. This is what rolls up into ROAS and ACOS.',
+    scenario: 'Your campaign drove 200 orders with an average order value of $45.',
+    calc: '200 × $45 = $9,000',
+    result: 'Sales = $9,000',
+    why: 'Sales is the numerator of every profitability metric. Without revenue attribution, you can\'t tie ad spend to business outcomes.',
+    benchmark: 'No universal benchmark — it\'s the absolute dollar value driven by ads.'
+  },
+  {
+    id: 'roas', name: 'ROAS', full: 'Return on Ad Spend', cat: 'revenue',
+    short: 'Revenue generated per dollar spent on ads.',
+    formula: 'ROAS = Revenue from Ads ÷ Ad Spend',
+    def: 'ROAS is the most common profitability metric in advertising. It tells you how many dollars came back for every dollar spent. It\'s typically expressed as a ratio (4:1 or 4x) or a percentage (400%).',
+    scenario: 'You spent $10,000 on Diwali sale ads and drove $50,000 in attributed sales.',
+    calc: '$50,000 ÷ $10,000 = 5',
+    result: 'ROAS = 5 (or 5:1, or 500%). You earned $5 for every $1 spent.',
+    why: 'ROAS is the universal efficiency number. But beware — a high ROAS isn\'t automatically good. If your product margin is only 20%, a 4x ROAS means you\'re breaking even, not profiting.',
+    benchmark: 'eCommerce: 3–5x is healthy. High-margin luxury: 2x can work. Low-margin FMCG: need 7x+. Always cross-check vs product margin.'
+  },
+  {
+    id: 'acos', name: 'ACOS', full: 'Advertising Cost of Sale', cat: 'revenue',
+    short: 'The % of sales you spent on ads — the inverse of ROAS.',
+    formula: 'ACOS = (Ad Spend ÷ Ad-Attributed Sales) × 100',
+    def: 'ACOS is ROAS\'s mirror twin, popular in Amazon advertising. It tells you what percentage of revenue was eaten by ad cost. Lower = more efficient.',
+    scenario: 'You spent $2,000 on Sponsored Products and generated $10,000 in attributed sales.',
+    calc: '($2,000 ÷ $10,000) × 100 = 20%',
+    result: 'ACOS = 20%. Twenty cents of every sale dollar went to ads.',
+    why: 'ACOS is easier to reason about than ROAS for many sellers because you can directly compare it to your product margin. If your margin is 30% and ACOS is 20%, you\'re profitable.',
+    benchmark: 'Depends on margin. Break-even ACOS = your product\'s contribution margin %. Target ACOS = below your margin.'
+  },
+  {
+    id: 'tacos', name: 'TACOS', full: 'Total Advertising Cost of Sale', cat: 'revenue',
+    short: 'Ad spend as a % of TOTAL sales (organic + paid).',
+    formula: 'TACOS = (Ad Spend ÷ Total Sales) × 100',
+    def: 'TACOS is ACOS\'s more honest cousin. It divides ad spend by your TOTAL revenue — including organic sales that ads may have helped influence.',
+    scenario: 'You spent $2,000 on ads. That drove $10,000 in direct ad sales, but your total sales for the month (organic + paid) were $30,000.',
+    calc: '($2,000 ÷ $30,000) × 100 = 6.67%',
+    result: 'TACOS = 6.67%',
+    why: 'TACOS shows whether your ads are lifting the whole business or just cannibalizing organic. If TACOS is falling while total sales rise, your ads are building genuine brand momentum.',
+    benchmark: 'Falling TACOS while revenue grows = healthy brand building. Rising TACOS without growth = problem. Target often 8–15%.'
+  },
+  {
+    id: 'roi', name: 'ROI', full: 'Return on Investment', cat: 'revenue',
+    short: 'Net profit relative to ad spend.',
+    formula: 'ROI = ((Revenue − Ad Spend − COGS) ÷ Ad Spend) × 100',
+    def: 'Unlike ROAS (which uses gross revenue), ROI factors in all costs — product cost, fees, and ad spend itself. It tells you the actual profit return on each dollar of ads.',
+    scenario: 'You spent $10,000 on ads, drove $50,000 in sales, with $30,000 in COGS.',
+    calc: '(($50,000 − $10,000 − $30,000) ÷ $10,000) × 100 = 100%',
+    result: 'ROI = 100%. You doubled every dollar after all costs.',
+    why: 'ROI is what CFOs actually care about. ROAS tells you efficiency; ROI tells you profitability. The two can point opposite directions on low-margin products.',
+    benchmark: 'Positive ROI means profitable ads. Above 100% means you\'re earning more than you spent.'
+  },
+  {
+    id: 'aov', name: 'AOV', full: 'Average Order Value', cat: 'revenue',
+    short: 'Average dollars per order.',
+    formula: 'AOV = Total Revenue ÷ Number of Orders',
+    def: 'AOV is a powerful lever because increasing it improves ROAS, ACOS, and margin simultaneously — without needing more traffic.',
+    scenario: 'Your store drove $20,000 in sales across 500 orders.',
+    calc: '$20,000 ÷ 500 = $40',
+    result: 'AOV = $40',
+    why: 'Doubling AOV (through bundles, upsells, volume discounts) doubles your ROAS without spending a rupee more on ads. It\'s the highest-leverage growth lever in eCommerce.',
+    benchmark: 'Track over time — trending up is good. Sudden drops suggest promotional cannibalization.'
+  },
+  {
+    id: 'ltv', name: 'LTV', full: 'Lifetime Value', cat: 'revenue',
+    short: 'Total revenue a customer generates over their relationship with you.',
+    formula: 'LTV = AOV × Purchase Frequency × Customer Lifespan',
+    def: 'LTV is the long view on customer worth. A $40 first order might look like a $40 customer — but if they reorder 3x/year for 4 years, their actual LTV is $480.',
+    scenario: 'AOV is $40, customers order 3 times a year, and stay active for 4 years.',
+    calc: '$40 × 3 × 4 = $480',
+    result: 'LTV = $480',
+    why: 'LTV unlocks higher acquisition spending. If you know a new customer is worth $480 over their lifetime, you can afford to pay more than $40 to acquire them.',
+    benchmark: 'Aim for LTV:CPA ratio of at least 3:1 for healthy unit economics.'
+  },
+
+  // ---------- VIDEO ----------
+  {
+    id: 'video-views', name: 'Video Views', full: 'Completed Video Plays', cat: 'video',
+    short: 'Count of qualifying video plays.',
+    formula: 'Views = Count of plays meeting view threshold',
+    def: 'Each platform defines a "view" differently. YouTube: 30 seconds (or full play if shorter). Meta: 3 seconds. TikTok: 1 second. Always check the definition before comparing.',
+    scenario: 'A 30-second YouTube ad is played for 30+ seconds by 15,000 users.',
+    calc: 'Count of plays meeting threshold',
+    result: 'Video Views = 15,000',
+    why: 'Raw view count shows scale, but view quality (completion rate) tells you if the message actually landed.',
+    benchmark: 'Don\'t compare view counts across platforms — the definitions differ too much.'
+  },
+  {
+    id: 'vcr', name: 'VCR', full: 'Video Completion Rate', cat: 'video',
+    short: 'The % of video plays that ran to the end.',
+    formula: 'VCR = (Completed Views ÷ Video Plays) × 100',
+    def: 'VCR measures how many people stuck around for the full message. The longer the ad, the harder it is to maintain VCR.',
+    scenario: 'Your 15-second ad was played 10,000 times, and 7,500 users watched it through to 100%.',
+    calc: '(7,500 ÷ 10,000) × 100 = 75%',
+    result: 'VCR = 75%',
+    why: 'VCR is a tight measure of creative quality. If people are dropping off early, your hook isn\'t working. Platforms often reward high-VCR creative with cheaper delivery.',
+    benchmark: 'CTV / OTT: 90%+ (non-skippable). YouTube skippable: 20–35%. Social auto-play: 10–25%.'
+  },
+  {
+    id: 'vtr', name: 'VTR', full: 'View-Through Rate / View-Through Conversions', cat: 'video',
+    short: 'Conversions that happened after seeing but not clicking an ad.',
+    formula: 'VTR Conversions = Conversions from users who viewed but didn\'t click',
+    def: 'Some users won\'t click your video or display ad — but they\'ll see it, remember it, and search for your brand later. Those conversions are attributed as "view-through."',
+    scenario: 'Your display campaign drove 50 click-through conversions and 180 view-through conversions within a 7-day window.',
+    calc: '180 VT conversions attributed to impressions',
+    result: 'VTR Conversions = 180',
+    why: 'View-through conversions matter most for upper-funnel brand ads (video, display, CTV) where clicks are rare but lift is real. Don\'t rely only on last-click attribution.',
+    benchmark: 'Typically 2–5x your click-through conversion volume for display/video campaigns.'
+  },
+  {
+    id: 'cpv', name: 'CPV', full: 'Cost Per View', cat: 'video',
+    short: 'How much you pay per qualified video view.',
+    formula: 'CPV = Ad Spend ÷ Video Views',
+    def: 'CPV is the pricing model for many video platforms (notably YouTube TrueView). You only pay when someone actually watches a meaningful portion of your ad.',
+    scenario: 'You spent $1,500 on a YouTube campaign that drove 50,000 qualified views.',
+    calc: '$1,500 ÷ 50,000 = $0.03',
+    result: 'CPV = $0.03',
+    why: 'CPV aligns cost with attention. Unlike CPM (where you pay for all impressions), CPV ensures you only pay when someone actually watches.',
+    benchmark: 'YouTube TrueView: $0.02–$0.10. TikTok: $0.01–$0.05. Premium CTV: $0.10–$0.30.'
+  },
+
+  // ---------- AMAZON / DSP ----------
+  {
+    id: 'dpvr', name: 'DPVR', full: 'Detail Page View Rate', cat: 'amazon',
+    short: 'Amazon DSP metric: % of impressions that drove a Detail Page View.',
+    formula: 'DPVR = (Detail Page Views ÷ Impressions) × 100',
+    def: 'Exclusive to Amazon DSP. Measures how effectively your ad drove people to the product detail page — even if they didn\'t click directly. A strong mid-funnel signal.',
+    scenario: 'An Amazon DSP display campaign served 200,000 impressions and drove 1,800 detail page views (click-through + view-through).',
+    calc: '(1,800 ÷ 200,000) × 100 = 0.9%',
+    result: 'DPVR = 0.9%',
+    why: 'DPVR is more meaningful than CTR on Amazon DSP because it captures the browse-then-search behavior that\'s very common in retail advertising.',
+    benchmark: 'Typically 0.3–1.5% on Amazon DSP display depending on audience and creative.'
+  },
+  {
+    id: 'ntb', name: 'NTB', full: 'New-to-Brand', cat: 'amazon',
+    short: 'Orders or customers who haven\'t purchased your brand in the past 12 months.',
+    formula: 'NTB % = (NTB Orders ÷ Total Orders) × 100',
+    def: 'An Amazon-specific metric. A customer is classified as "New-to-Brand" if they haven\'t purchased from your brand in the last 12 months. It\'s the best proxy for actual customer acquisition on Amazon.',
+    scenario: 'Your Sponsored Brands campaign drove 500 orders, and 350 were from new-to-brand shoppers.',
+    calc: '(350 ÷ 500) × 100 = 70%',
+    result: 'NTB % = 70%',
+    why: 'High NTB% means your ads are genuinely growing the customer base, not just being shown to existing customers who would have bought anyway.',
+    benchmark: 'Sponsored Brands / Sponsored Display typically: 40–75% NTB. Above 50% is strong.'
+  },
+  {
+    id: 'atcr', name: 'ATCR', full: 'Add-to-Cart Rate', cat: 'amazon',
+    short: 'The % of clicks (or DPVs) that resulted in an add-to-cart.',
+    formula: 'ATCR = (Add-to-Carts ÷ Clicks or DPVs) × 100',
+    def: 'A micro-conversion metric that tells you how interested viewers are in actually buying, even if they don\'t check out right away.',
+    scenario: '1,000 users clicked your ad and reached the detail page. 120 of them added the product to cart.',
+    calc: '(120 ÷ 1,000) × 100 = 12%',
+    result: 'ATCR = 12%',
+    why: 'Low ATCR often signals listing problems — bad images, unclear value prop, missing reviews, or wrong price. It\'s a mid-funnel diagnostic.',
+    benchmark: 'Amazon: 5–15%. A healthy ATCR paired with low CVR suggests cart-abandonment or checkout friction.'
+  },
+  {
+    id: 'brand-halo', name: 'Brand Halo', full: 'Halo Sales', cat: 'amazon',
+    short: 'Sales of OTHER products from your brand driven by a single ad.',
+    formula: 'Halo Sales = Sales on non-advertised SKUs from the same brand',
+    def: 'When a shopper clicks an ad for your hand cream but ends up buying your body lotion instead, that\'s a halo sale. Amazon tracks and reports this separately.',
+    scenario: 'Your Sponsored Products ad for Product A drove $5,000 in Product A sales and an additional $1,200 in sales of Products B, C, D from your brand catalog.',
+    calc: 'Halo Sales = $1,200',
+    result: 'Halo Sales = $1,200 (on top of the $5,000 direct)',
+    why: 'Brand halo reveals the true ROAS of your campaigns. Looking only at the advertised ASIN will chronically underestimate the value your ads create.',
+    benchmark: 'Often 15–40% of direct sales, highly dependent on brand catalog depth.'
+  },
+  {
+    id: 'win-rate', name: 'Win Rate', full: 'Auction Win Rate', cat: 'amazon',
+    short: 'The % of auctions your bid actually won.',
+    formula: 'Win Rate = (Auctions Won ÷ Auctions Entered) × 100',
+    def: 'Every ad impression comes from a real-time auction (especially in DSP and programmatic). Win rate shows how often your bids are beating competitors.',
+    scenario: 'Your DSP campaign entered 1,000,000 auctions across a day and won 40,000 of them.',
+    calc: '(40,000 ÷ 1,000,000) × 100 = 4%',
+    result: 'Win Rate = 4%',
+    why: 'Low win rate = your bid is too low, your creative is being filtered, or your audience is oversaturated. It\'s a diagnostic for scale issues.',
+    benchmark: 'Highly variable — 2–10% on DSP is normal. Below 1% means your bid is uncompetitive.'
+  }
+];
+
+/* =============================================================
+   DATA — DSP LESSONS
+   ============================================================= */
+const dspLessons = [
+  {
+    title: 'What is a DSP?',
+    preview: 'The software that lets advertisers buy ad space across the web, programmatically.',
+    body: `
+      <p>A <b>Demand-Side Platform (DSP)</b> is software that lets advertisers buy digital ad inventory — display ads, video, streaming TV, audio — from multiple sources, all through a single interface, in real time.</p>
+      <p>Instead of negotiating with individual publishers one by one, a DSP lets you bid on millions of individual impressions per second through an auction, targeting specific audiences with precision.</p>
+      <h5>The key idea</h5>
+      <p>Every time a webpage loads, there's a tiny auction happening in the background. A user with a specific profile is about to see an ad slot — and DSPs from around the world bid to fill it, in under 100 milliseconds. The highest bidder wins, their ad loads, and the user sees it. This happens billions of times a day.</p>
+      <div class="callout"><b>Popular DSPs:</b> Amazon DSP, The Trade Desk, DV360 (Google), Xandr, MediaMath, Adobe Advertising Cloud.</div>
+    `
+  },
+  {
+    title: 'How programmatic actually works (RTB)',
+    preview: 'A step-by-step walkthrough of a 100-millisecond auction.',
+    body: `
+      <p>Real-Time Bidding (RTB) is the auction engine behind most programmatic buying. Here's what happens every single time a digital ad loads:</p>
+      <div class="flow">
+        <span class="node">User visits page</span>
+        <span class="arrow">→</span>
+        <span class="node">SSP sends bid request</span>
+        <span class="arrow">→</span>
+        <span class="node">Ad Exchange</span>
+        <span class="arrow">→</span>
+        <span class="node">DSPs bid</span>
+        <span class="arrow">→</span>
+        <span class="node">Winner's ad loads</span>
+      </div>
+      <ol style="padding-left:20px; margin:0 0 14px; color: var(--ink);">
+        <li style="margin-bottom:6px">User lands on a website or opens an app.</li>
+        <li style="margin-bottom:6px">The publisher's <b>SSP (Supply-Side Platform)</b> packages data about the user (location, cookie ID, device, page context) and sends it to an Ad Exchange.</li>
+        <li style="margin-bottom:6px">The Ad Exchange broadcasts the bid request to connected <b>DSPs</b>.</li>
+        <li style="margin-bottom:6px">Each DSP evaluates the user against its advertisers' targeting criteria and bids if there's a match. The bid happens algorithmically.</li>
+        <li style="margin-bottom:6px">The highest bid wins. The winning creative is served to the user.</li>
+        <li>All of this — from page load to ad display — happens in ~100 milliseconds.</li>
+      </ol>
+    `
+  },
+  {
+    title: 'The ecosystem: DSP vs SSP vs Ad Exchange vs DMP',
+    preview: 'Four acronyms that confuse everyone. Here\'s how they fit together.',
+    body: `
+      <p>The programmatic ecosystem has four main players. Each has a distinct job:</p>
+      <div class="compare-wrap">
+        <table class="compare">
+          <tr>
+            <th>Player</th>
+            <th>Who uses it</th>
+            <th>What it does</th>
+          </tr>
+          <tr>
+            <td>DSP</td>
+            <td>Advertisers / agencies</td>
+            <td>Buys ad inventory. Manages bidding, targeting, creative delivery, and measurement.</td>
+          </tr>
+          <tr>
+            <td>SSP</td>
+            <td>Publishers</td>
+            <td>Sells ad inventory. Connects publisher ad slots to multiple exchanges to maximize revenue.</td>
+          </tr>
+          <tr>
+            <td>Ad Exchange</td>
+            <td>The marketplace</td>
+            <td>The auction house. Connects DSPs (buyers) and SSPs (sellers) and runs the real-time auction.</td>
+          </tr>
+          <tr>
+            <td>DMP</td>
+            <td>Advertisers & publishers</td>
+            <td>Data Management Platform. Stores and organizes audience data — used by DSPs for targeting.</td>
+          </tr>
+        </table>
+      </div>
+      <div class="callout"><b>Simple analogy:</b> think of it like a stock market. DSP = buyer's brokerage. SSP = seller's brokerage. Ad Exchange = the stock exchange itself. DMP = the research tool telling you which stocks (audiences) to bid on.</div>
+    `
+  },
+  {
+    title: 'Amazon DSP specifically',
+    preview: 'What makes Amazon\'s DSP different from the others.',
+    body: `
+      <p>Amazon DSP lets you buy display, video, and audio ads — but the killer difference is the <b>shopping data</b>. Amazon knows what people actually buy, browse, and add to cart. No other DSP has that.</p>
+      <h5>What you can do with Amazon DSP</h5>
+      <ul>
+        <li>Target shoppers based on real purchase behavior — e.g., "people who bought running shoes in the last 30 days."</li>
+        <li>Retarget users who viewed your product detail page but didn't buy.</li>
+        <li>Create lookalike audiences based on your existing customers.</li>
+        <li>Run ads on Amazon.in/.com, Prime Video, Freevee, Twitch, IMDb, Fire TV, plus third-party sites and apps.</li>
+        <li>Measure campaign impact on actual Amazon sales — not just click-throughs.</li>
+      </ul>
+      <h5>Key audience types on Amazon DSP</h5>
+      <ul>
+        <li><b>In-Market:</b> Shoppers actively researching products in a category right now.</li>
+        <li><b>Lifestyle:</b> Long-term behavioral patterns (e.g., "fitness enthusiasts", "home chefs").</li>
+        <li><b>Remarketing:</b> People who interacted with your brand, ASIN, or category.</li>
+        <li><b>Lookalike:</b> New users who behave like your existing customers.</li>
+        <li><b>Contextual:</b> Targeting based on page or content context rather than user profile.</li>
+      </ul>
+    `
+  },
+  {
+    title: 'Ad formats on DSPs',
+    preview: 'Display, video, OTT, audio — and how to pick between them.',
+    body: `
+      <p>Most DSPs let you run the same campaign across many formats:</p>
+      <ul>
+        <li><b>Display / Banners:</b> Image ads on websites and apps. Cheap, scalable, great for retargeting. Low CTR.</li>
+        <li><b>Online Video:</b> Pre-roll, mid-roll, and out-stream video on publishers and YouTube. Great for storytelling.</li>
+        <li><b>OTT / CTV:</b> Ads on streaming services — Prime Video, Hulu, Roku, Fire TV. TV-quality reach with digital targeting.</li>
+        <li><b>Audio:</b> Ads on streaming audio (Spotify, Amazon Music, podcasts). High attention, often cheap CPMs.</li>
+        <li><b>Native:</b> Ads that match the look and feel of the host site or app. Higher engagement, less "banner blindness."</li>
+      </ul>
+      <div class="callout"><b>Pick by goal:</b> Awareness → OTT + video. Consideration → display + video retargeting. Conversion → display retargeting + audience lookalikes.</div>
+    `
+  },
+  {
+    title: 'DSP vs Sponsored Ads — when to use which',
+    preview: 'They are different tools for different jobs.',
+    body: `
+      <p>This confuses many beginners: Sponsored Products/Brands/Display are also called "Amazon Ads" — but they're a different system from Amazon DSP.</p>
+      <div class="compare-wrap">
+        <table class="compare">
+          <tr>
+            <th>Factor</th>
+            <th>Sponsored Ads</th>
+            <th>DSP</th>
+          </tr>
+          <tr>
+            <td>Pricing</td>
+            <td>CPC (pay per click)</td>
+            <td>CPM (pay per 1,000 impressions)</td>
+          </tr>
+          <tr>
+            <td>Where ads show</td>
+            <td>Mostly on Amazon search & product pages</td>
+            <td>Across Amazon + open web + CTV + apps</td>
+          </tr>
+          <tr>
+            <td>Best for</td>
+            <td>Capturing ready-to-buy demand</td>
+            <td>Creating demand, retargeting, awareness</td>
+          </tr>
+          <tr>
+            <td>Account access</td>
+            <td>Self-serve, any seller</td>
+            <td>Self-serve (managed) or via agency</td>
+          </tr>
+          <tr>
+            <td>Min. budget</td>
+            <td>No minimum</td>
+            <td>Typically $35K+/month (varies)</td>
+          </tr>
+          <tr>
+            <td>Funnel stage</td>
+            <td>Bottom-funnel (high intent)</td>
+            <td>Full-funnel (especially upper/mid)</td>
+          </tr>
+        </table>
+      </div>
+      <div class="callout"><b>Rule of thumb:</b> Use Sponsored Ads to harvest existing demand. Use DSP to generate new demand and re-engage browsers.</div>
+    `
+  },
+
+  // ========= DIVIDER =========
+  { divider: 'Settings & Controls', note: 'Every knob inside the DSP — what it does, where you\'ll find it, and why you\'d touch it.' },
+
+  // ========= SETTINGS LESSONS =========
+  {
+    title: 'Campaign hierarchy: Orders, Line Items, Creatives',
+    preview: 'Every DSP organizes a campaign in three stacked layers. Get this right first.',
+    body: `
+      <p>Before any setting makes sense, you need the three-layer structure:</p>
+      <ul>
+        <li><b>Order (or Campaign):</b> The top container. Holds overall budget, flight dates, and the campaign's business goal. Think of it as "the brief."</li>
+        <li><b>Line Item (or Tactic):</b> The strategy layer. Each line item has its own targeting, supply sources, bid, and creatives. One order usually contains multiple line items — e.g., a "Retargeting" line item, a "Prospecting" line item, and a "Lookalike" line item running under one budget.</li>
+        <li><b>Creative:</b> The actual ad asset — a banner, video, or audio clip that loads in the user's browser. Each line item can have many creatives for rotation or A/B testing.</li>
+      </ul>
+      <h5>Why this matters</h5>
+      <p>Nearly every setting you'll configure lives at the <b>line-item level</b>, not the order level. This separation is what lets you run multiple parallel strategies under a single budget — each with different bids, targeting, and creative — while still reporting on the order as a whole.</p>
+    `
+  },
+  {
+    title: 'Budget & Pacing',
+    preview: 'Total budget, daily caps, and how evenly money is spent across the flight.',
+    body: `
+      <p>DSPs give you two budget levers and a pacing choice:</p>
+      <ul>
+        <li><b>Total (Lifetime) Budget:</b> The overall cap for the flight. When hit, the campaign stops.</li>
+        <li><b>Daily Budget:</b> A cap per day. Prevents blowing your entire budget in one viral morning.</li>
+      </ul>
+      <h5>Pacing options</h5>
+      <ul>
+        <li><b>Standard (Even):</b> Algorithm spreads spend evenly across the remaining days of the flight. Default for most campaigns.</li>
+        <li><b>ASAP (Accelerated):</b> Spend as fast as possible. For flash sales, countdown offers, or limited-time events where reach speed matters more than cost efficiency.</li>
+      </ul>
+      <div class="callout"><b>Why pacing matters:</b> without it, a campaign can eat its daily budget in 30 minutes during a morning traffic spike — then go dark all afternoon. Pacing is the difference between controlled reach and wasted spend.</div>
+      <h5>Pro tip</h5>
+      <p>Always set both a Lifetime Budget <i>and</i> a Daily Budget, even if you have a big budget overall. The Daily Budget acts as a safety net against runaway spend if something goes wrong with your targeting.</p>
+    `
+  },
+  {
+    title: 'Flight Dates & Dayparting',
+    preview: 'When — exactly — should your ads run? Days, hours, and everything in between.',
+    body: `
+      <p><b>Flight dates</b> are your campaign's start and end date. Most DSPs let you schedule campaigns to kick on automatically at a future moment — useful for launches tied to PR, product drops, or sales events.</p>
+      <h5>Dayparting (aka day-part scheduling)</h5>
+      <p>Dayparting goes deeper: it lets you choose which hours of which days your ads are allowed to serve. You can be surgical — e.g., only 11 AM–2 PM, Monday–Friday.</p>
+      <h5>Common dayparting strategies</h5>
+      <ul>
+        <li>A lunch-delivery app restricts ads to 11 AM–2 PM and 6 PM–9 PM only.</li>
+        <li>A B2B SaaS tool only runs Mon–Fri, 9 AM–6 PM when decision-makers are at work.</li>
+        <li>An eCommerce brand blocks 2 AM–6 AM because historical data shows those clicks don't convert.</li>
+        <li>Pair with offline TV flights: only run digital when TV is dark to maximize incremental reach.</li>
+      </ul>
+      <div class="callout"><b>Why it matters:</b> impressions at 3 AM often convert at a tiny fraction of the 1 PM rate. Dayparting cuts those low-value hours entirely and reallocates budget to your best windows — usually a 10–25% efficiency gain.</div>
+    `
+  },
+  {
+    title: 'Frequency Capping',
+    preview: 'Stop showing the same person your ad a hundred times. One of the most overlooked settings.',
+    body: `
+      <p>A <b>frequency cap</b> is the maximum number of times a single user can see your ad across a given time window. It's one of the most important — and most ignored — controls in the entire DSP.</p>
+      <h5>How it's configured</h5>
+      <ul>
+        <li><b>Per day</b> — e.g., max 3 times per day</li>
+        <li><b>Per week</b> — e.g., max 10 times per week</li>
+        <li><b>Per month / flight</b> — e.g., max 25 times for the whole campaign</li>
+        <li><b>Enforcement level</b> — usually at the Line Item OR the Order. Order-level capping is smarter because it prevents one user from hitting the cap 3 separate times across 3 line items in the same order.</li>
+      </ul>
+      <h5>Why caps exist</h5>
+      <ul>
+        <li>Above ~7–10 exposures, additional impressions rarely lift conversion — and can create negative brand associations (ad fatigue).</li>
+        <li>Uncapped campaigns concentrate spend on easy-to-reach users, starving the long tail of your audience.</li>
+        <li>Frequency capping is one of the cheapest ways to stretch reach without raising budget.</li>
+      </ul>
+      <div class="callout"><b>Rule of thumb:</b> 3/day and 10–15/week for display. For video, cap tighter (2/day, 7/week) — video exposures feel heavier to users. For CTV, even lower.</div>
+    `
+  },
+  {
+    title: 'Bidding: Base Bid, Max CPM, and Bid Optimization',
+    preview: 'How you tell the DSP what each impression is worth.',
+    body: `
+      <p>Bidding in a DSP has three components you control:</p>
+      <ul>
+        <li><b>Base Bid (Target CPM):</b> Your opening bid for a typical impression. The algorithm uses this as the center of its bidding strategy.</li>
+        <li><b>Max CPM (Bid Ceiling):</b> The absolute most you'll pay for any single impression. A hard stop — even if the algorithm thinks the impression is perfect.</li>
+        <li><b>Bid Optimization Goal:</b> What the algorithm should optimize spend toward.</li>
+      </ul>
+      <h5>Common optimization goals</h5>
+      <ul>
+        <li><b>Maximize Reach</b> — bid low, reach wide. For awareness.</li>
+        <li><b>Maximize Clicks</b> — algorithm bids up when a click looks likely.</li>
+        <li><b>Maximize Conversions</b> — bids up when a conversion looks likely. Requires conversion tracking.</li>
+        <li><b>Maximize DPV (Amazon DSP)</b> — optimize for Detail Page Views.</li>
+        <li><b>Target CPA</b> — try to hit a specific cost-per-acquisition.</li>
+        <li><b>Target ROAS</b> — try to hit a specific return on ad spend.</li>
+      </ul>
+      <div class="callout"><b>Pro tip:</b> Start with Base Bid near the category average ($3–$8 for display), set Max CPM at 1.5–2× base to give the algorithm room to compete for high-value users, and pick an optimization goal that matches your funnel stage.</div>
+    `
+  },
+  {
+    title: 'Audience Targeting — Every Type Explained',
+    preview: 'In-Market, Lifestyle, Remarketing, Lookalike, CRM — when to use each.',
+    body: `
+      <p>Audience targeting is where DSPs earn their keep. Here's every audience type you'll encounter:</p>
+      <ul>
+        <li><b>In-Market Audiences:</b> People actively researching a category <i>right now</i>. E.g., "In-Market for Running Shoes." Short-term intent, highest conversion rates.</li>
+        <li><b>Lifestyle Audiences:</b> Long-term behavioral patterns — "Fitness Enthusiasts," "Home Chefs," "Frequent Travelers." Great for upper-funnel brand work.</li>
+        <li><b>Life Events:</b> Major milestones — "Recently Moved," "New Parents," "Getting Married." Surprisingly high intent for relevant categories.</li>
+        <li><b>Remarketing Audiences:</b> People who already interacted with your brand — viewed a product page, added to cart, purchased before. Lowest cost, highest conversion.</li>
+        <li><b>Lookalike / Similar Audiences:</b> New users who behave like your best existing customers. The primary way to scale beyond your known audience.</li>
+        <li><b>Advertiser (CRM) Audiences:</b> Your own customer list, uploaded as hashed emails and matched to DSP users. Excellent for loyalty, winback, and exclusions.</li>
+        <li><b>Contextual Audiences:</b> Technically not "audience" — targets the content context rather than the user. Important for cookie-less environments.</li>
+      </ul>
+      <div class="callout"><b>The funnel stack:</b> In-Market + Lookalikes at the top of the funnel, Remarketing at the bottom, CRM to exclude existing customers from prospecting. Layer them — don't pick just one.</div>
+    `
+  },
+  {
+    title: 'Contextual Targeting',
+    preview: 'Target based on what the user is reading — not who they are.',
+    body: `
+      <p>Contextual targeting ignores user profiles entirely. Instead, it targets the <b>content</b> on the page:</p>
+      <ul>
+        <li><b>Category targeting:</b> Show ads on pages about "Cooking," "Finance," "Travel," etc.</li>
+        <li><b>Keyword targeting:</b> Show ads on pages containing specific words or phrases.</li>
+        <li><b>URL / Domain targeting:</b> Target specific websites or URL patterns.</li>
+        <li><b>ASIN targeting (Amazon DSP):</b> Show ads on specific product detail pages or category pages on Amazon.</li>
+        <li><b>Show type / Genre (for CTV):</b> Target specific content types — "Documentaries," "Live Sports," "Comedy Series."</li>
+      </ul>
+      <h5>Why it's getting more important</h5>
+      <ul>
+        <li><b>Cookieless-friendly:</b> Contextual doesn't depend on user tracking, so it's resilient to GDPR, CCPA, and browser cookie deprecation.</li>
+        <li><b>Inherently brand-safe:</b> You control exactly where you appear.</li>
+        <li><b>Strong relevance signal:</b> someone reading a marathon-training article is a great audience for running shoes, regardless of their cookie history.</li>
+      </ul>
+    `
+  },
+  {
+    title: 'Geo, Device & OS Targeting',
+    preview: 'Where, on what, and on which OS your ads run.',
+    body: `
+      <h5>Geo-targeting</h5>
+      <ul>
+        <li><b>Country / Region:</b> National or multi-country campaigns.</li>
+        <li><b>State / DMA / City:</b> Regional campaigns.</li>
+        <li><b>Postal Code / Pincode:</b> Zip-level precision.</li>
+        <li><b>Lat-Long Radius:</b> Draw a circle around a point — e.g., 1-mile radius around a store. Used for "geo-fencing."</li>
+        <li><b>Geo Exclusions:</b> Block areas where you don't deliver or ship.</li>
+      </ul>
+      <h5>Device targeting</h5>
+      <p>Desktop, Mobile Web, Mobile In-App, Tablet, Connected TV (CTV), Audio Device. Useful for matching ad format to context.</p>
+      <h5>OS targeting</h5>
+      <p>iOS, Android, Windows, macOS. Essential for app-install campaigns — don't promote an iOS app to Android users.</p>
+      <div class="callout"><b>Why it matters:</b> a local restaurant doesn't need national reach. A tablet-heavy audience might deliver worse LTV than a mobile one. These settings let you cut waste before you spend a dollar.</div>
+    `
+  },
+  {
+    title: 'Supply Sources & Deal IDs',
+    preview: 'Where, exactly, your ad inventory is coming from — and how to pick the premium stuff.',
+    body: `
+      <p>A DSP buys inventory from many places. You control which:</p>
+      <ul>
+        <li><b>Open Exchange:</b> The massive auction of inventory across thousands of publishers. Cheapest, largest scale, most variable quality.</li>
+        <li><b>Private Marketplace (PMP):</b> Invite-only deals where premium publishers sell to a curated set of advertisers. Higher CPM, better quality, still auction-based.</li>
+        <li><b>Programmatic Guaranteed (PG):</b> Direct deal between advertiser and publisher at a fixed CPM and fixed volume — executed through the DSP but not auctioned.</li>
+        <li><b>Amazon O&O (Owned & Operated):</b> Exclusive to Amazon DSP. Inventory on Amazon.in / .com, Prime Video, Twitch, IMDb, Fire TV, and Amazon Music.</li>
+        <li><b>Deal IDs:</b> Specific negotiated packages — e.g., "NYT Homepage, 300×250, above the fold" at a set CPM. You enter the Deal ID into the DSP to access it.</li>
+      </ul>
+      <div class="callout"><b>Why it matters:</b> open exchange is efficient but noisy. PMPs and Deal IDs cost more but give you premium placements and better viewability. The most effective campaigns usually layer open exchange (scale) with PMPs (quality).</div>
+    `
+  },
+  {
+    title: 'Inclusion & Exclusion Lists',
+    preview: 'Allowlists and blocklists — control exactly where ads appear.',
+    body: `
+      <p>Two lists every campaign should maintain:</p>
+      <ul>
+        <li><b>Inclusion List (Allowlist / Whitelist):</b> Ads will ONLY run on the domains and apps on this list. Very tight control. Used for premium-only campaigns or regulated industries.</li>
+        <li><b>Exclusion List (Blocklist / Blacklist):</b> Ads will NEVER run on listed domains or apps. Use to block competitor sites, low-quality sites, wasteful placements from past campaigns, or sensitive content.</li>
+      </ul>
+      <h5>Category-level exclusions</h5>
+      <ul>
+        <li>Block entire IAB categories (gambling, politics, adult content).</li>
+        <li>Block specific app bundle IDs on iOS and Android.</li>
+        <li>Block content adjacent to news tragedies or sensitive topics (many DSPs let you exclude by keyword).</li>
+      </ul>
+      <div class="callout"><b>Pro tip:</b> even with brand-safety tools enabled, bad inventory leaks through. Review the "Sites Report" weekly and add wasteful placements to the blocklist. A healthy 500–1,000 domain blocklist is normal for any mature campaign.</div>
+    `
+  },
+  {
+    title: 'Viewability & Brand Safety',
+    preview: 'Only pay for ads someone can actually see, in content you actually trust.',
+    body: `
+      <h5>Viewability threshold</h5>
+      <p>Set a minimum viewability requirement — e.g., only buy inventory where the 30-day viewability rate exceeds 70%. Low-viewability inventory is cheap but often never actually reaches a human eye.</p>
+      <h5>Brand safety integrations</h5>
+      <p>DSPs connect to third-party verification partners (IAS — Integral Ad Science, DoubleVerify, MOAT) that pre-filter inventory:</p>
+      <ul>
+        <li>Block ads from appearing near violent, adult, or hateful content.</li>
+        <li>Block placements next to misinformation or fake news.</li>
+        <li>Custom keyword blocking — never appear on pages containing specific terms.</li>
+      </ul>
+      <h5>Invalid Traffic (IVT) filtering</h5>
+      <p>Filter bot traffic, fraud, and non-human traffic. DSPs have built-in IVT detection; third-party tools add another layer. Industry research suggests 20–30% of open-exchange traffic is invalid or low-quality without these filters.</p>
+      <div class="callout"><b>Why it matters:</b> an unviewable impression is an impression that didn't exist in the user's mind. A brand-unsafe placement — say, a luxury car ad next to a graphic news article — is a PR crisis waiting to happen. These filters protect both ROI and reputation.</div>
+    `
+  },
+  {
+    title: 'Creative Settings',
+    preview: 'How your actual ad asset gets configured, rotated, and delivered.',
+    body: `
+      <p>Creative-level settings include:</p>
+      <ul>
+        <li><b>Creative Type:</b> Static image, animated HTML5, video, native, audio.</li>
+        <li><b>Dimensions / Formats:</b> Standard display sizes (300×250, 728×90, 160×600, 970×250) or video specs (6s, 15s, 30s).</li>
+        <li><b>Click-through URL:</b> Where users land when they click. Usually includes tracking parameters (UTM) for measurement.</li>
+        <li><b>Impression & Click Pixels:</b> Third-party tracking pixels from verification tools or ad servers.</li>
+        <li><b>Creative Rotation:</b>
+          <ul style="margin-top:6px">
+            <li><i>Optimized</i> — algorithm favors the best-performing creative. Production default.</li>
+            <li><i>Even</i> — all creatives get equal impressions. Use this for A/B testing.</li>
+          </ul>
+        </li>
+        <li><b>Frequency Cap per Creative:</b> Separate caps per asset — avoid burning out one creative early.</li>
+        <li><b>Sequential Messaging:</b> Show Creative A first, then only show Creative B to users who already saw A. Enables storytelling across a series.</li>
+      </ul>
+      <div class="callout"><b>Why it matters:</b> creative is responsible for more performance variance than any other lever — industry studies consistently attribute roughly 70% of ROI variance to creative. Testing multiple creatives per line item isn't optional, it's required.</div>
+    `
+  },
+  {
+    title: 'Measurement: Pixels, Conversion Tracking & Attribution',
+    preview: 'How the DSP knows when an ad actually drove a sale.',
+    body: `
+      <p>Measuring anything beyond clicks requires tracking setup:</p>
+      <ul>
+        <li><b>Conversion Pixel:</b> A small tracking tag placed on your site (usually on the post-purchase "Thank You" page). Fires on conversion, tying it back to ad exposure.</li>
+        <li><b>Amazon Attribution (Amazon DSP):</b> Automatic conversion tracking for products sold on Amazon — no pixel needed.</li>
+        <li><b>Conversion Events:</b> Define what counts — Purchase, Add-to-Cart, Lead, App Install, Video View, Newsletter Signup, etc.</li>
+        <li><b>Attribution Window:</b> How long after an ad exposure does a conversion still count?
+          <ul style="margin-top:6px">
+            <li><i>Click-through</i>: typically 7 or 14 days</li>
+            <li><i>View-through</i>: typically 1 to 7 days (shorter because view-based attribution is noisier)</li>
+          </ul>
+        </li>
+        <li><b>Attribution Model:</b> Last-click is the default on most platforms, but modern DSPs also offer first-click, linear, time-decay, and position-based (U-shaped) models.</li>
+      </ul>
+      <div class="callout"><b>Why it matters:</b> without proper tracking you're flying blind. You'll see clicks but not sales, and you won't be able to distinguish campaigns that drive revenue from ones that just drive activity. Set this up <i>before</i> launching, not after.</div>
+    `
+  }
+];
+
+/* =============================================================
+   DATA — SPONSORED CAMPAIGNS LESSONS
+   ============================================================= */
+const sponsoredLessons = [
+  {
+    title: 'Sponsored Products (SP)',
+    preview: 'The workhorse format. Appears in search results and on product pages.',
+    body: `
+      <p><b>Sponsored Products</b> are keyword and product-targeted ads that appear within Amazon search results and on product detail pages. They look almost identical to organic listings (just with a small "Sponsored" label). You pay only when someone clicks (CPC).</p>
+      <h5>Where they show up</h5>
+      <ul>
+        <li>Top of search results (most valuable real estate)</li>
+        <li>Middle and bottom of search results ("rest of search")</li>
+        <li>On competitor and complementary product detail pages</li>
+      </ul>
+      <h5>Who they're for</h5>
+      <p>Any Amazon seller with a listing. SP is the lowest barrier to entry and almost always the starting point for new advertisers.</p>
+      <h5>Campaign types</h5>
+      <ul>
+        <li><b>Automatic:</b> Amazon's algorithm picks the targets. Great for discovery and harvesting keywords.</li>
+        <li><b>Manual:</b> You pick the keywords or products to target. Gives more control once you know what converts.</li>
+      </ul>
+      <div class="callout"><b>Pro tip:</b> Start with Automatic for 2–3 weeks, mine the search term report, then promote top-performing search terms into Manual campaigns with higher bids.</div>
+    `
+  },
+  {
+    title: 'Sponsored Brands (SB)',
+    preview: 'The banner ad with your logo, headline, and product lineup.',
+    body: `
+      <p><b>Sponsored Brands</b> are larger banner-style ads that typically appear above search results. They feature your brand logo, a custom headline, and up to three products — or a video.</p>
+      <h5>Where they show up</h5>
+      <ul>
+        <li>Top of search results banner</li>
+        <li>Left rail of search results</li>
+        <li>Below search results</li>
+      </ul>
+      <h5>Requirement</h5>
+      <p>You must be brand-registered with Amazon Brand Registry. This is gated to protect brand integrity.</p>
+      <h5>Creative formats</h5>
+      <ul>
+        <li><b>Product Collection:</b> Logo + headline + 3 products.</li>
+        <li><b>Store Spotlight:</b> Showcases a brand Store with category tiles.</li>
+        <li><b>Video:</b> A 6–45 second video that auto-plays in search. Often the highest CTR format.</li>
+      </ul>
+      <div class="callout"><b>Best use:</b> Sponsored Brands is where you build actual brand awareness on Amazon. High NTB %, higher funnel than SP.</div>
+    `
+  },
+  {
+    title: 'Sponsored Display (SD)',
+    preview: 'Retargeting and audience-based ads, on and off Amazon.',
+    body: `
+      <p><b>Sponsored Display</b> is the closest thing to DSP inside the self-serve Sponsored Ads console. Unlike SP and SB (which show in search results), SD ads can appear on product pages, category pages, and even off-Amazon sites.</p>
+      <h5>Targeting options</h5>
+      <ul>
+        <li><b>Product targeting:</b> Show your ad on specific competitor ASINs or related categories.</li>
+        <li><b>Audiences — Views:</b> Retarget shoppers who viewed your product but didn't buy.</li>
+        <li><b>Audiences — Purchases:</b> Reach buyers of complementary products or past customers for upsell.</li>
+        <li><b>Amazon Audiences:</b> In-Market, Lifestyle, Life Events — the same segments available in DSP.</li>
+      </ul>
+      <h5>Where they show up</h5>
+      <ul>
+        <li>Product detail pages</li>
+        <li>Customer review pages</li>
+        <li>Off-Amazon websites and apps (third-party supply)</li>
+      </ul>
+      <div class="callout"><b>The underrated format:</b> Sponsored Display is how sellers without DSP budget get retargeting capabilities. Most brands underutilize it.</div>
+    `
+  },
+  {
+    title: 'Match types: Broad, Phrase, Exact, Negative',
+    preview: 'The four ways keywords can trigger your ad.',
+    body: `
+      <p>In Manual keyword campaigns, each keyword you add runs in one of three match types. Each controls how loose or strict the trigger is.</p>
+      <div class="compare-wrap">
+        <table class="compare">
+          <tr>
+            <th>Match type</th>
+            <th>How it works</th>
+            <th>Example: keyword "running shoes"</th>
+          </tr>
+          <tr>
+            <td>Broad</td>
+            <td>Triggers on anything related — including synonyms, misspellings, and word variations.</td>
+            <td>"shoes for running", "jogging sneakers", "best trainers for marathon"</td>
+          </tr>
+          <tr>
+            <td>Phrase</td>
+            <td>Triggers when the phrase appears in the search, in that order, possibly with words before/after.</td>
+            <td>"men's running shoes", "running shoes size 10", "cheap running shoes"</td>
+          </tr>
+          <tr>
+            <td>Exact</td>
+            <td>Triggers only on that exact phrase (with tiny tolerance for plurals/typos).</td>
+            <td>"running shoes", "running shoe"</td>
+          </tr>
+          <tr>
+            <td>Negative</td>
+            <td>Blocks specific terms from triggering your ad. Use for irrelevant or low-converting searches.</td>
+            <td>Negative "kids" → ad won't show for "kids running shoes"</td>
+          </tr>
+        </table>
+      </div>
+      <div class="callout"><b>Strategy:</b> Broad for discovery (find new keywords), Phrase for controlled expansion, Exact for scaling what already converts. Layer in Negatives aggressively to cut waste.</div>
+    `
+  },
+  {
+    title: 'Bidding strategies',
+    preview: 'How Amazon auto-adjusts your bids — and when to let it.',
+    body: `
+      <p>Every click auction is a real auction. You don't always pay your max bid — you pay slightly more than the second-highest bidder. Amazon offers three strategies for how to bid:</p>
+      <ul>
+        <li><b>Dynamic bids — down only:</b> Amazon lowers your bid in real time when a conversion looks unlikely. Safe, conservative. Default for new accounts.</li>
+        <li><b>Dynamic bids — up and down:</b> Amazon can also raise your bid up to 100% (on top-of-search) or 50% (elsewhere) when a click looks likely to convert. Aggressive. Best for proven keywords.</li>
+        <li><b>Fixed bids:</b> Your bid is your bid. No automatic adjustments. Most control, least optimization.</li>
+      </ul>
+      <h5>Placement multipliers</h5>
+      <p>Beyond the strategy, you can layer <b>placement modifiers</b> — boosting your bid specifically for "Top of search" or "Product pages" by a percentage. Top-of-search placement typically has much higher conversion rates, justifying a bid premium.</p>
+      <div class="callout"><b>Rule of thumb:</b> New campaigns → Dynamic Down Only. Proven campaigns with strong ACOS → Dynamic Up & Down + 25–50% top-of-search modifier to scale winners.</div>
+    `
+  },
+  {
+    title: 'Targeting types explained',
+    preview: 'Keyword vs Product vs Category vs Audience targeting.',
+    body: `
+      <p>Sponsored Ads let you target in four fundamentally different ways. Each is best for different goals:</p>
+      <ul>
+        <li><b>Keyword targeting:</b> Bid on search terms shoppers type. Best for SP and SB. Captures active intent.</li>
+        <li><b>Product (ASIN) targeting:</b> Show your ad on a specific competitor or complementary product's page. Available in SP and SD. Perfect for conquesting.</li>
+        <li><b>Category targeting:</b> Target a whole category or subcategory of products. Broader reach than ASIN targeting, useful for upper-funnel.</li>
+        <li><b>Audience targeting (SD only):</b> Target based on shopper behavior rather than context — viewers, purchasers, lookalikes, lifestyles. This is the "DSP-lite" capability inside SD.</li>
+      </ul>
+      <div class="callout"><b>Combo strategy:</b> Use Keywords to capture demand, ASIN targeting to steal share from competitors, and Audiences in SD to re-engage viewers who didn't convert the first time.</div>
+    `
+  },
+  {
+    title: 'SP vs SB vs SD at a glance',
+    preview: 'When should each be your go-to?',
+    body: `
+      <div class="compare-wrap">
+        <table class="compare">
+          <tr>
+            <th></th>
+            <th>Sponsored Products</th>
+            <th>Sponsored Brands</th>
+            <th>Sponsored Display</th>
+          </tr>
+          <tr>
+            <td>Pricing</td>
+            <td>CPC</td>
+            <td>CPC</td>
+            <td>CPC or vCPM</td>
+          </tr>
+          <tr>
+            <td>Primary placement</td>
+            <td>Search results & PDPs</td>
+            <td>Above search results</td>
+            <td>PDPs & off-Amazon</td>
+          </tr>
+          <tr>
+            <td>Creative</td>
+            <td>Product image only</td>
+            <td>Logo + headline + products (or video)</td>
+            <td>Product image or custom creative</td>
+          </tr>
+          <tr>
+            <td>Brand registry needed</td>
+            <td>No</td>
+            <td>Yes</td>
+            <td>Yes</td>
+          </tr>
+          <tr>
+            <td>Best for</td>
+            <td>Direct-response, capturing demand</td>
+            <td>Brand awareness, NTB growth</td>
+            <td>Retargeting, conquesting, audiences</td>
+          </tr>
+          <tr>
+            <td>Typical ACOS</td>
+            <td>15–40%</td>
+            <td>20–50%</td>
+            <td>30–80% (higher funnel)</td>
+          </tr>
+        </table>
+      </div>
+      <div class="callout"><b>Healthy portfolio mix:</b> roughly 60–70% of budget on SP (demand capture), 15–25% on SB (brand building), 10–20% on SD (retargeting + audience expansion). Adjust based on brand maturity.</div>
+    `
+  }
+];
+
+/* =============================================================
+   RENDERING
+   ============================================================= */
+const catLabels = {
+  awareness: 'Awareness',
+  engagement: 'Engagement',
+  conversion: 'Conversion',
+  revenue: 'Revenue',
+  video: 'Video',
+  amazon: 'Amazon / DSP'
+};
+
+const grid = document.getElementById('metric-grid');
+function renderMetrics(filter = 'all') {
+  grid.innerHTML = '';
+  const list = filter === 'all' ? metrics : metrics.filter(m => m.cat === filter);
+  list.forEach(m => {
+    const btn = document.createElement('button');
+    btn.className = 'card';
+    btn.setAttribute('data-id', m.id);
+    btn.innerHTML = `
+      <span class="badge ${m.cat}">${catLabels[m.cat]}</span>
+      <h3 class="metric-name">${m.name}</h3>
+      <div class="metric-full">${m.full}</div>
+      <p class="metric-short">${m.short}</p>
+      <div class="formula-peek">${m.formula}</div>
+      <div class="tap-hint">Tap to learn →</div>
+    `;
+    btn.addEventListener('click', () => openModal(m));
+    grid.appendChild(btn);
+  });
+}
+renderMetrics();
+
+// Filters
+document.querySelectorAll('#metric-filters .pill').forEach(p => {
+  p.addEventListener('click', () => {
+    document.querySelectorAll('#metric-filters .pill').forEach(x => x.classList.remove('active'));
+    p.classList.add('active');
+    renderMetrics(p.dataset.filter);
+  });
+});
+
+/* ---------- DSP lessons ---------- */
+const dspWrap = document.getElementById('dsp-lessons');
+dspLessons.forEach((l, i) => {
+  if (l.divider) {
+    const div = document.createElement('div');
+    div.className = 'section-divider';
+    div.innerHTML = `
+      <span class="section-divider-label">${l.divider}</span>
+      ${l.note ? `<p class="section-divider-note">${l.note}</p>` : ''}
+    `;
+    dspWrap.appendChild(div);
+    return;
+  }
+  const el = document.createElement('details');
+  el.className = 'lesson';
+  el.setAttribute('data-lesson-id', 'dsp-' + i);
+  el.innerHTML = `
+    <summary>
+      <h4>${l.title}</h4>
+      <p class="preview">${l.preview}</p>
+      <span class="chev">+</span>
+    </summary>
+    <div class="lesson-body">${l.body}</div>
+  `;
+  dspWrap.appendChild(el);
+});
+
+/* ---------- Sponsored lessons ---------- */
+const spWrap = document.getElementById('sponsored-lessons');
+sponsoredLessons.forEach((l, i) => {
+  const el = document.createElement('details');
+  el.className = 'lesson';
+  el.setAttribute('data-lesson-id', 'sp-' + i);
+  el.innerHTML = `
+    <summary>
+      <h4>${l.title}</h4>
+      <p class="preview">${l.preview}</p>
+      <span class="chev">+</span>
+    </summary>
+    <div class="lesson-body">${l.body}</div>
+  `;
+  spWrap.appendChild(el);
+});
+
+/* ---------- Formulas cheat sheet ---------- */
+const fList = document.getElementById('formula-list');
+metrics.forEach(m => {
+  const row = document.createElement('div');
+  row.className = 'formula-row';
+  row.innerHTML = `
+    <div class="name">${m.name}</div>
+    <div class="equation">${m.formula}</div>
+  `;
+  fList.appendChild(row);
+});
+
+/* ---------- Tabs ---------- */
+function switchTab(tabName) {
+  document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+  document.querySelectorAll('.view').forEach(x => x.classList.remove('active'));
+  const tabBtn = document.querySelector(`.tab[data-tab="${tabName}"]`);
+  const view = document.getElementById(tabName);
+  if (tabBtn) tabBtn.classList.add('active');
+  if (view) view.classList.add('active');
+}
+document.querySelectorAll('.tab').forEach(t => {
+  t.addEventListener('click', () => {
+    switchTab(t.dataset.tab);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+});
+
+/* ---------- Modal ---------- */
+const modal = document.getElementById('modal');
+const modalContent = document.getElementById('modal-content');
+const modalClose = document.getElementById('modal-close');
+
+function openModal(m) {
+  modalContent.innerHTML = `
+    <span class="badge ${m.cat}" style="display:inline-block;">${catLabels[m.cat]}</span>
+    <h3>${m.name}</h3>
+    <div class="sub">${m.full}</div>
+    <div class="def">${m.def}</div>
+
+    <div class="block">
+      <div class="block-label">The Formula</div>
+      <div class="formula">${m.formula}</div>
+    </div>
+
+    <div class="block">
+      <div class="block-label">Worked Example</div>
+      <div class="example-scenario">${m.scenario}</div>
+      <div class="example-calc">${m.calc}</div>
+      <div class="example-result">${m.result}</div>
+    </div>
+
+    <div class="block">
+      <div class="block-label">Why It Matters</div>
+      <div class="why-text">${m.why}</div>
+    </div>
+
+    <div class="benchmark"><span>${m.benchmark}</span></div>
+  `;
+  modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal() {
+  modal.classList.remove('open');
+  document.body.style.overflow = '';
+}
+modalClose.addEventListener('click', closeModal);
+modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && modal.classList.contains('open')) closeModal(); });
+
+/* ---------- SEARCH ---------- */
+function stripHtml(html) {
+  return html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
+}
+
+const searchIndex = [
+  ...metrics.map(m => ({
+    type: 'metric',
+    id: m.id,
+    title: m.name,
+    subtitle: m.full,
+    preview: m.short,
+    haystack: (m.name + ' ' + m.full + ' ' + m.short + ' ' + (m.def || '') + ' ' + m.cat).toLowerCase(),
+    section: 'Metrics · ' + catLabels[m.cat]
+  })),
+  ...dspLessons
+    .map((l, i) => ({ ...l, __idx: i }))
+    .filter(l => !l.divider)
+    .map(l => ({
+      type: 'dsp',
+      id: 'dsp-' + l.__idx,
+      title: l.title,
+      subtitle: '',
+      preview: l.preview,
+      haystack: (l.title + ' ' + l.preview + ' ' + stripHtml(l.body)).toLowerCase(),
+      section: 'DSP'
+    })),
+  ...sponsoredLessons.map((l, i) => ({
+    type: 'sponsored',
+    id: 'sp-' + i,
+    title: l.title,
+    subtitle: '',
+    preview: l.preview,
+    haystack: (l.title + ' ' + l.preview + ' ' + stripHtml(l.body)).toLowerCase(),
+    section: 'Sponsored Ads'
+  }))
+];
+
+const searchInput = document.getElementById('search');
+const searchResults = document.getElementById('search-results');
+const searchClear = document.getElementById('search-clear');
+let selectedIdx = -1;
+let currentResults = [];
+
+function highlight(text, q) {
+  if (!q) return text;
+  const re = new RegExp('(' + q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi');
+  return text.replace(re, '<mark>$1</mark>');
+}
+
+function renderResults(results, q) {
+  searchResults.innerHTML = '';
+  selectedIdx = -1;
+  currentResults = results;
+  if (results.length === 0) {
+    searchResults.innerHTML = `<div class="search-empty">No results for "<b>${q}</b>". Try a shorter term like "ROAS", "audience", or "bid".</div>`;
+    searchResults.classList.add('open');
+    return;
+  }
+  results.forEach((r, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'search-result';
+    btn.dataset.idx = i;
+    btn.innerHTML = `
+      <div class="r-section">${r.section}</div>
+      <div class="r-title">${highlight(r.title, q)}${r.subtitle ? ` <span style="color:var(--ink-3); font-weight:400;">· ${r.subtitle}</span>` : ''}</div>
+      <div class="r-preview">${highlight(r.preview, q)}</div>
+    `;
+    btn.addEventListener('click', () => handleSearchResult(r));
+    searchResults.appendChild(btn);
+  });
+  searchResults.classList.add('open');
+}
+
+function doSearch(query) {
+  const q = query.toLowerCase().trim();
+  if (!q) {
+    searchResults.classList.remove('open');
+    searchClear.classList.remove('show');
+    return;
+  }
+  searchClear.classList.add('show');
+  const matches = searchIndex
+    .filter(item => item.haystack.includes(q))
+    .map(item => {
+      // Rank: title exact > title includes > body includes
+      const t = item.title.toLowerCase();
+      let score = 1;
+      if (t === q) score = 4;
+      else if (t.startsWith(q)) score = 3;
+      else if (t.includes(q)) score = 2;
+      return { ...item, score };
+    })
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 10);
+  renderResults(matches, q);
+}
+
+searchInput.addEventListener('input', e => doSearch(e.target.value));
+searchInput.addEventListener('focus', () => {
+  if (searchInput.value.trim()) doSearch(searchInput.value);
+});
+searchClear.addEventListener('click', () => {
+  searchInput.value = '';
+  searchInput.focus();
+  doSearch('');
+});
+
+searchInput.addEventListener('keydown', e => {
+  if (e.key === 'ArrowDown') {
+    e.preventDefault();
+    if (!currentResults.length) return;
+    selectedIdx = Math.min(selectedIdx + 1, currentResults.length - 1);
+    updateSelected();
+  } else if (e.key === 'ArrowUp') {
+    e.preventDefault();
+    selectedIdx = Math.max(selectedIdx - 1, -1);
+    updateSelected();
+  } else if (e.key === 'Enter') {
+    e.preventDefault();
+    if (selectedIdx >= 0 && currentResults[selectedIdx]) {
+      handleSearchResult(currentResults[selectedIdx]);
+    } else if (currentResults.length > 0) {
+      handleSearchResult(currentResults[0]);
+    }
+  } else if (e.key === 'Escape') {
+    searchResults.classList.remove('open');
+    searchInput.blur();
+  }
+});
+
+function updateSelected() {
+  const items = searchResults.querySelectorAll('.search-result');
+  items.forEach((item, i) => item.classList.toggle('selected', i === selectedIdx));
+  if (selectedIdx >= 0 && items[selectedIdx]) {
+    items[selectedIdx].scrollIntoView({ block: 'nearest' });
+  }
+}
+
+document.addEventListener('click', e => {
+  if (!e.target.closest('.search-wrap')) {
+    searchResults.classList.remove('open');
+  }
+});
+
+function handleSearchResult(result) {
+  searchResults.classList.remove('open');
+  searchInput.value = '';
+  searchClear.classList.remove('show');
+
+  if (result.type === 'metric') {
+    switchTab('metrics');
+    window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
+    const m = metrics.find(x => x.id === result.id);
+    if (m) setTimeout(() => openModal(m), 80);
+  } else if (result.type === 'dsp' || result.type === 'sponsored') {
+    switchTab(result.type === 'dsp' ? 'dsp' : 'sponsored');
+    setTimeout(() => {
+      const el = document.querySelector(`[data-lesson-id="${result.id}"]`);
+      if (el) {
+        el.open = true;
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        // subtle flash to draw attention
+        el.animate(
+          [
+            { boxShadow: '0 0 0 0 rgba(198,71,43,0.4)' },
+            { boxShadow: '0 0 0 6px rgba(198,71,43,0.15)' },
+            { boxShadow: '0 0 0 0 rgba(198,71,43,0)' }
+          ],
+          { duration: 900, easing: 'ease-out' }
+        );
+      }
+    }, 120);
+  }
+}
+
+/* Keyboard shortcut: press "/" to focus search */
+document.addEventListener('keydown', e => {
+  if (e.key === '/' && document.activeElement !== searchInput && !modal.classList.contains('open')) {
+    e.preventDefault();
+    searchInput.focus();
+  }
+});
+</script>
+</body>
+</html>
