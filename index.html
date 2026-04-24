@@ -560,6 +560,67 @@
   }
   .benchmark::before { content: "★"; font-size: 14px; }
 
+  /* ---------- ACTIONS BLOCK ---------- */
+  .actions-block {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin-bottom: 14px;
+    position: relative;
+    overflow: hidden;
+  }
+  .actions-block::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: var(--accent);
+  }
+  .actions-block .block-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 14px;
+    font-weight: 600;
+  }
+  .action-group { margin-bottom: 16px; }
+  .action-group:last-child { margin-bottom: 0; }
+  .action-group-head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .action-arrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1;
+  }
+  .action-arrow.down { color: var(--accent); }
+  .action-arrow.up { color: var(--green); }
+  .action-arrow.neutral { color: var(--amber); }
+  .action-group-title {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .action-list {
+    margin: 0;
+    padding-left: 24px;
+    color: var(--ink-2);
+  }
+  .action-list li {
+    margin-bottom: 6px;
+    line-height: 1.55;
+    font-size: 14px;
+  }
+  .action-list li:last-child { margin-bottom: 0; }
+  .action-list li b { color: var(--ink); font-weight: 600; }
+
   /* ---------- LONG-FORM LESSONS (DSP & Sponsored) ---------- */
   .lesson {
     background: var(--card);
@@ -835,7 +896,21 @@ const metrics = [
     calc: 'Total ad serves in 24 hours = 20,000',
     result: 'Impressions = 20,000',
     why: 'Impressions are the fuel of awareness campaigns. More impressions = more opportunities to be seen. But impressions alone don\'t mean attention — that\'s where Viewability comes in.',
-    benchmark: 'There\'s no "good" number — it depends entirely on your budget and CPM.'
+    benchmark: 'There\'s no "good" number — it depends entirely on your budget and CPM.',
+    actions: {
+      low: [
+        '<b>Increase bid / base CPM</b> — you may be losing auctions. Raise bid 15–25% and monitor win rate.',
+        '<b>Broaden targeting</b> — your audience may be too narrow. Add lookalikes or expand geo / demo filters.',
+        '<b>Expand supply sources</b> — enable open exchange if running on PMPs only, or add new publishers.',
+        '<b>Check daily pacing</b> — if on "even" pacing with a small budget, impressions are throttled throughout the day. Consider "ASAP" for short flights.',
+        '<b>Review creative rejections</b> — banners may have been disapproved. Check the creative approval status.'
+      ],
+      high: [
+        '<b>Only a problem if efficiency is suffering</b> — otherwise, scaling impressions is usually good.',
+        '<b>Tighten frequency cap</b> if you\'re just hammering the same users.',
+        '<b>Exclude converted audiences</b> so you stop paying to reach already-converted customers.'
+      ]
+    }
   },
   {
     id: 'reach', name: 'Reach', full: 'Unique People Exposed', cat: 'awareness',
@@ -846,7 +921,20 @@ const metrics = [
     calc: '30,000 impressions ÷ 3 average views per person',
     result: 'Reach = 10,000 unique people',
     why: 'Reach tells you how broadly your message is spreading. For brand launches, you want high reach. For remarketing, you want repeated frequency over smaller reach.',
-    benchmark: 'Depends on campaign goal. New product launch? Maximize reach. Retargeting? Smaller reach is fine.'
+    benchmark: 'Depends on campaign goal. New product launch? Maximize reach. Retargeting? Smaller reach is fine.',
+    actions: {
+      low: [
+        '<b>Lower frequency cap</b> — if frequency is high (7+) and reach is low, you\'re over-exposing a small audience. Cap at 3/day or 10/week.',
+        '<b>Expand audience size</b> — layer lookalike audiences, broader in-market segments, or contextual targeting.',
+        '<b>Add supply sources</b> — more inventory = more unique users reachable.',
+        '<b>Raise CPM bid</b> — if win rate is low, you\'re losing auctions for eligible users.',
+        '<b>Check budget</b> — reach scales with budget. $500 can\'t reach a million people at $5 CPM.'
+      ],
+      high: [
+        '<b>Generally good for awareness</b>, but check frequency — if it\'s dropped below 2, exposure may be too shallow to leave an impression.',
+        '<b>For performance campaigns</b>, high reach with low conversions suggests wrong audience — narrow the targeting.'
+      ]
+    }
   },
   {
     id: 'frequency', name: 'Frequency', full: 'Avg Impressions Per Person', cat: 'awareness',
@@ -857,7 +945,21 @@ const metrics = [
     calc: '50,000 ÷ 10,000 = 5',
     result: 'Frequency = 5 (each person saw the ad 5 times on average)',
     why: 'The "rule of 7" says people need to see a message 7 times to remember it — but context matters. Video ads saturate faster; display ads need more repetition.',
-    benchmark: 'Aim for 3–7 per campaign flight for awareness. Above 10 and you\'re likely wasting spend on already-engaged users.'
+    benchmark: 'Aim for 3–7 per campaign flight for awareness. Above 10 and you\'re likely wasting spend on already-engaged users.',
+    actions: {
+      low: [
+        '<b>Raise the frequency cap</b> or remove it — you\'re capping too aggressively.',
+        '<b>Narrow the audience</b> — if reach is huge and frequency is below 2, the audience is too big for your budget.',
+        '<b>Increase budget or flight length</b> so each user has more chance to be exposed.'
+      ],
+      high: [
+        '<b>Tighten the frequency cap</b> — set to 3/day and 10/week maximum for display.',
+        '<b>Refresh creatives</b> — repeated exposure to the same ad accelerates fatigue. Rotate in new versions.',
+        '<b>Suppress converters</b> — stop showing ads to users who already bought.',
+        '<b>Expand audience</b> — you\'re oversaturating a small pool. Add similar audiences or broaden targeting.',
+        '<b>Enable sequential messaging</b> so users see different ads after the first few exposures.'
+      ]
+    }
   },
   {
     id: 'cpm', name: 'CPM', full: 'Cost Per Mille (Per 1,000 Impressions)', cat: 'awareness',
@@ -868,7 +970,21 @@ const metrics = [
     calc: '($500 ÷ 125,000) × 1,000 = $4.00',
     result: 'CPM = $4.00',
     why: 'CPM is how you compare the cost of reaching audiences across different publishers and platforms. A premium publisher might charge $15 CPM, while open web might be $1.50 CPM.',
-    benchmark: 'Display: $1–$10. Connected TV: $25–$50. Premium video: $10–$30. Amazon DSP: $3–$10 depending on supply.'
+    benchmark: 'Display: $1–$10. Connected TV: $25–$50. Premium video: $10–$30. Amazon DSP: $3–$10 depending on supply.',
+    actions: {
+      low: [
+        '<b>Usually good — but verify quality.</b> Low CPM can mean low-quality inventory. Check viewability and brand safety reports.',
+        '<b>Review the domain list</b> — if you\'re running on MFA (Made-for-Advertising) sites or clickbait, CPM will be cheap but worthless. Block them.',
+        '<b>Confirm IVT rate</b> — cheap CPM with 10%+ invalid traffic is a red flag.'
+      ],
+      high: [
+        '<b>Lower max bid</b> — you may be overbidding in auctions. Drop by 10–15% and monitor delivery.',
+        '<b>Open up supply</b> — if you\'re restricted to PMPs, add open exchange to bring down blended CPM.',
+        '<b>Reduce audience exclusivity</b> — the more exclusive (e.g., narrow in-market + CRM + geo), the higher the CPM.',
+        '<b>Switch optimization goal</b> — "Max Reach" typically yields lower CPMs than "Max Conversions".',
+        '<b>Check dayparting</b> — prime-time slots are expensive. Running 24/7 blends in cheaper hours.'
+      ]
+    }
   },
   {
     id: 'viewability', name: 'Viewability', full: 'Viewable Impression Rate', cat: 'awareness',
@@ -879,7 +995,20 @@ const metrics = [
     calc: '(72,000 ÷ 100,000) × 100 = 72%',
     result: 'Viewability = 72%',
     why: 'An unviewable impression is effectively worthless — nobody saw it. High viewability is the first prerequisite for an ad to do its job.',
-    benchmark: 'Industry average ~70%. Premium inventory targets 80%+. Below 50% is a red flag about your supply quality.'
+    benchmark: 'Industry average ~70%. Premium inventory targets 80%+. Below 50% is a red flag about your supply quality.',
+    actions: {
+      low: [
+        '<b>Enable viewability targeting</b> — set a minimum 70% viewability filter in your DSP.',
+        '<b>Blocklist low-viewability domains</b> — pull the domain report, filter for <50% viewability, and add to exclusion list.',
+        '<b>Shift budget to PMPs</b> — premium private marketplaces typically have 80%+ viewability vs 60% on open exchange.',
+        '<b>Switch to above-the-fold only</b> — use placement filters to exclude below-fold slots.',
+        '<b>Prefer standard sizes</b> — 300×250 and 728×90 typically have higher viewability than skyscrapers or interstitials.'
+      ],
+      high: [
+        '<b>Already strong</b> — focus on next quality metric (CTR, conversions, brand lift).',
+        '<b>Monitor</b> — high viewability with poor CTR means the ad is seen but not compelling.'
+      ]
+    }
   },
   {
     id: 'sov', name: 'SOV', full: 'Share of Voice', cat: 'awareness',
@@ -890,7 +1019,21 @@ const metrics = [
     calc: '($150K ÷ $1M) × 100 = 15%',
     result: 'SOV = 15%',
     why: 'Share of Voice correlates strongly with long-term market share. If your SOV is higher than your market share, you\'re likely growing. If it\'s lower, you\'re losing ground.',
-    benchmark: 'Should roughly match or exceed your market share in the category for sustained growth.'
+    benchmark: 'Should roughly match or exceed your market share in the category for sustained growth.',
+    actions: {
+      low: [
+        '<b>Increase budget</b> — if SOV < market share, you\'re slowly losing ground. A 10–20% budget lift can protect share.',
+        '<b>Bid higher on category keywords</b> — especially head terms where competitors are dominating.',
+        '<b>Activate Sponsored Brands</b> — the top-of-search banner is the most visible SOV builder on Amazon.',
+        '<b>Check impression share loss report</b> — see exactly what\'s causing loss (budget-driven or rank-driven).',
+        '<b>Match competitor seasonality</b> — if rivals ramp for a peak, you need to match their flight.'
+      ],
+      high: [
+        '<b>Great position — now protect it.</b> Sudden drops are harder to recover than slow builds.',
+        '<b>Diversify format mix</b> — don\'t rely on one format; competitors can undercut single channels.',
+        '<b>Monitor efficiency</b> — excessive SOV ($$$) without proportional sales means you\'re overspending. Right-size.'
+      ]
+    }
   },
 
   // ---------- ENGAGEMENT ----------
@@ -903,7 +1046,21 @@ const metrics = [
     calc: 'Clicks recorded in campaign dashboard',
     result: 'Clicks = 800',
     why: 'Clicks are the first real signal of interest. They\'re the bridge between impressions (passive) and conversions (action).',
-    benchmark: 'Volume depends entirely on impressions and CTR.'
+    benchmark: 'Volume depends entirely on impressions and CTR.',
+    actions: {
+      low: [
+        '<b>Diagnose whether it\'s impressions or CTR</b> — low clicks can be caused by either. Fix the root cause.',
+        '<b>If impressions are low</b> → raise bids, broaden targeting, expand supply.',
+        '<b>If CTR is low</b> → test new creative, refine audience, improve relevance.',
+        '<b>Check landing page load speed</b> — slow pages cause click abandonment before they\'re counted.',
+        '<b>Review ad placement</b> — below-the-fold placements have much lower click rates.'
+      ],
+      high: [
+        '<b>Confirm clicks are legitimate</b> — sudden click spikes may indicate click fraud. Check IVT filters.',
+        '<b>Verify conversion follow-through</b> — lots of clicks with no conversions = wrong traffic or broken funnel.',
+        '<b>Scale the winners</b> — if quality clicks are rising, increase budget on top keywords/placements.'
+      ]
+    }
   },
   {
     id: 'ctr', name: 'CTR', full: 'Click-Through Rate', cat: 'engagement',
@@ -914,7 +1071,23 @@ const metrics = [
     calc: '(750 ÷ 50,000) × 100 = 1.5%',
     result: 'CTR = 1.5%',
     why: 'CTR is the fastest diagnostic for creative and targeting quality. A poor CTR usually means: bad creative, wrong audience, or both.',
-    benchmark: 'Search ads: 2–5%. Sponsored Products: 0.3–0.5%. Display: 0.05–0.2%. Social: 0.5–1.5%. Context is everything.'
+    benchmark: 'Search ads: 2–5%. Sponsored Products: 0.3–0.5%. Display: 0.05–0.2%. Social: 0.5–1.5%. Context is everything.',
+    actions: {
+      low: [
+        '<b>Refresh the creative</b> — new imagery, new headline, clearer CTA. This is the #1 CTR lever.',
+        '<b>Add negative keywords</b> — if irrelevant queries are triggering your ad, CTR plummets.',
+        '<b>Tighten audience targeting</b> — swap broad audiences for in-market or retargeting segments.',
+        '<b>Improve match types</b> (Sponsored Ads) — shift from Broad to Phrase/Exact to filter weak matches.',
+        '<b>Use rich formats</b> — video and native ads consistently outperform static display on CTR.',
+        '<b>Add social proof</b> to the creative — review count, "#1 best-seller" badges, star ratings.',
+        '<b>Check ad fatigue</b> — if frequency is >7 and CTR is declining, rotate in fresh creative.'
+      ],
+      high: [
+        '<b>Scale carefully</b> — high CTR with weak conversions may mean clickbait creative. Verify downstream CVR.',
+        '<b>Expand winning creatives</b> to more audiences and placements.',
+        '<b>Build lookalikes</b> from clickers — they\'re your most engaged audience.'
+      ]
+    }
   },
   {
     id: 'cpc', name: 'CPC', full: 'Cost Per Click', cat: 'engagement',
@@ -925,7 +1098,23 @@ const metrics = [
     calc: '$600 ÷ 1,200 = $0.50',
     result: 'CPC = $0.50',
     why: 'CPC is the cost side of your click-based economics. Combined with conversion rate and AOV, it tells you if clicks are profitable.',
-    benchmark: 'Amazon SP: $0.30–$2+ depending on category competition. Google Search: $1–$10+. Facebook: $0.50–$3.'
+    benchmark: 'Amazon SP: $0.30–$2+ depending on category competition. Google Search: $1–$10+. Facebook: $0.50–$3.',
+    actions: {
+      low: [
+        '<b>Usually positive</b> — but confirm traffic quality. Cheap clicks from bot traffic or irrelevant searches are worse than no clicks.',
+        '<b>Scale spend</b> on low-CPC keywords/placements if CVR is healthy.',
+        '<b>Watch for sudden CPC drops</b> — could mean your ad stopped showing in top placements.'
+      ],
+      high: [
+        '<b>Lower bids</b> by 10–15% on expensive keywords and observe impact on position.',
+        '<b>Add negative keywords</b> to filter expensive, low-intent searches.',
+        '<b>Improve Quality Score / Relevance</b> — higher ad relevance directly reduces CPC on most platforms.',
+        '<b>Test long-tail keywords</b> — specific, lower-volume terms usually cost a fraction of head terms.',
+        '<b>Improve CTR</b> — on auction-based platforms, higher CTR lowers your CPC (ad rank formula).',
+        '<b>Daypart away from peak hours</b> — competition is lower off-peak, so CPCs are lower.',
+        '<b>Reduce placement modifiers</b> — disable +100% top-of-search bid boost if you can\'t sustain it.'
+      ]
+    }
   },
   {
     id: 'engagement-rate', name: 'Engagement Rate', full: 'Interactive Ad Engagement', cat: 'engagement',
@@ -936,7 +1125,21 @@ const metrics = [
     calc: '(350 ÷ 10,000) × 100 = 3.5%',
     result: 'Engagement Rate = 3.5%',
     why: 'High engagement is a signal of creative resonance. Platforms like Meta and TikTok also use engagement as a ranking signal, which can lower your CPMs.',
-    benchmark: 'Instagram: 1–3%. TikTok: 5–10%. LinkedIn: 2%. Healthy engagement also reduces your delivery costs.'
+    benchmark: 'Instagram: 1–3%. TikTok: 5–10%. LinkedIn: 2%. Healthy engagement also reduces your delivery costs.',
+    actions: {
+      low: [
+        '<b>Shift to creator/UGC-style content</b> — native-feeling creative dramatically outperforms polished ads.',
+        '<b>Hook in the first 1–3 seconds</b> — movement, surprise, direct address beat slow intros.',
+        '<b>Pose a question or use a poll sticker</b> — direct engagement mechanics.',
+        '<b>Review audience fit</b> — if the audience doesn\'t care about the category, no creative saves it.',
+        '<b>A/B test creative formats</b> — carousel vs video vs static often swing engagement dramatically.'
+      ],
+      high: [
+        '<b>Double down</b> — high engagement → lower CPM → better delivery efficiency.',
+        '<b>Build custom audiences</b> from engagers to run retargeting campaigns.',
+        '<b>Document what worked</b> — the creative formula driving engagement is repeatable.'
+      ]
+    }
   },
 
   // ---------- CONVERSION ----------
@@ -949,7 +1152,21 @@ const metrics = [
     calc: 'Orders tracked via pixel / platform attribution = 400',
     result: 'Conversions = 400',
     why: 'Conversions are the ultimate unit of truth. Impressions and clicks feed this number — but conversions pay the bills.',
-    benchmark: 'Depends on funnel. Focus on rate, not volume.'
+    benchmark: 'Depends on funnel. Focus on rate, not volume.',
+    actions: {
+      low: [
+        '<b>Verify tracking</b> — before optimizing, confirm the conversion pixel / Amazon Attribution is firing. Missing conversions are often a tracking bug.',
+        '<b>Diagnose the leak</b> — is it low clicks, or low CVR after click? Different fixes.',
+        '<b>Fix the landing page / listing</b> — images, copy, reviews, price. Most conversion problems are post-click.',
+        '<b>Tighten audience</b> — broad prospecting audiences yield clicks but not buyers. Layer in intent signals.',
+        '<b>Review attribution window</b> — too short a window undercounts conversions that take days to complete.'
+      ],
+      high: [
+        '<b>Scale budgets on winning campaigns</b> — increase by 20% increments, not overnight doubling.',
+        '<b>Build lookalikes from converters</b> — your highest-value audience expansion tool.',
+        '<b>Launch retargeting</b> from product-page viewers to capture missed conversions.'
+      ]
+    }
   },
   {
     id: 'cvr', name: 'CVR', full: 'Conversion Rate', cat: 'conversion',
@@ -960,7 +1177,23 @@ const metrics = [
     calc: '(100 ÷ 5,000) × 100 = 2%',
     result: 'CVR = 2%',
     why: 'Low CVR means the click was wasted — either the audience wasn\'t right, or your landing page/listing couldn\'t close the deal. It\'s a cheap metric to improve vs lowering CPC.',
-    benchmark: 'eCommerce: 2–4%. Amazon SP: 8–15% (pre-qualified shoppers). B2B lead gen: 5–10%. Landing pages: 3–10%.'
+    benchmark: 'eCommerce: 2–4%. Amazon SP: 8–15% (pre-qualified shoppers). B2B lead gen: 5–10%. Landing pages: 3–10%.',
+    actions: {
+      low: [
+        '<b>Fix the listing / landing page</b> — main image, A+ content, title, bullets. On Amazon, this is 80% of CVR.',
+        '<b>Check price competitiveness</b> — if priced 15–20% above comparable SKUs, CVR collapses.',
+        '<b>Improve reviews</b> — fewer than 50 reviews or under 4 stars kills CVR. Launch review campaigns.',
+        '<b>Confirm you\'re in stock and have the Buy Box</b> (Amazon) — out-of-stock ads still run but don\'t convert.',
+        '<b>Add negative keywords / tighten match types</b> — unqualified traffic tanks CVR.',
+        '<b>Test a different offer</b> — free shipping, bundle, discount, coupon.',
+        '<b>Speed up the page</b> — every 1s of load time drops CVR by ~7%.'
+      ],
+      high: [
+        '<b>Scale aggressively</b> — raise budgets and bids on high-CVR keywords.',
+        '<b>Bid up for top-of-search placement</b> — high CVR justifies premium placement.',
+        '<b>Expand to similar products / audiences</b> with the same conversion pattern.'
+      ]
+    }
   },
   {
     id: 'cpa', name: 'CPA', full: 'Cost Per Acquisition', cat: 'conversion',
@@ -971,7 +1204,22 @@ const metrics = [
     calc: '$2,000 ÷ 50 = $40',
     result: 'CPA = $40',
     why: 'CPA is how you judge if paid acquisition is sustainable. If your CPA is higher than your customer\'s contribution margin, you\'re paying to lose money (unless LTV bails you out).',
-    benchmark: 'Compare to your Customer Lifetime Value (LTV). Healthy CPA:LTV ratio is typically 1:3 or better.'
+    benchmark: 'Compare to your Customer Lifetime Value (LTV). Healthy CPA:LTV ratio is typically 1:3 or better.',
+    actions: {
+      low: [
+        '<b>Scale spend</b> if volume is limited — good CPA + low volume usually means you\'re leaving growth on the table.',
+        '<b>Expand to lookalikes / similar audiences</b> with the same CPA efficiency.',
+        '<b>Raise bids</b> to increase impression share if you\'re capping out.'
+      ],
+      high: [
+        '<b>Lower CPCs</b> — cut the weakest 20% of keywords or reduce bids on expensive head terms.',
+        '<b>Lift CVR</b> — the cheapest CPA improvement is landing-page or listing optimization, not bid cuts.',
+        '<b>Pause underperformers</b> — identify keywords/placements with 3× target CPA and pause.',
+        '<b>Switch to target-CPA bidding</b> — let the algorithm optimize if you have 30+ conversions per month.',
+        '<b>Add negative keywords aggressively</b> — one high-spend, low-converting keyword can wreck blended CPA.',
+        '<b>Improve creative for relevance</b> — higher CTR and CVR both compound into lower CPA.'
+      ]
+    }
   },
   {
     id: 'cpo', name: 'CPO', full: 'Cost Per Order', cat: 'conversion',
@@ -982,7 +1230,20 @@ const metrics = [
     calc: '$750 ÷ 150 = $5',
     result: 'CPO = $5',
     why: 'CPO is useful for repeat-purchase categories (consumables, subscriptions) where you may drive multiple orders from the same customer.',
-    benchmark: 'Should be significantly lower than your product\'s contribution margin per order.'
+    benchmark: 'Should be significantly lower than your product\'s contribution margin per order.',
+    actions: {
+      low: [
+        '<b>Scale</b> — reinvest into the campaign generating orders efficiently.',
+        '<b>Introduce bundles</b> — push AOV up without adding ad spend, compounding the CPO advantage.'
+      ],
+      high: [
+        '<b>Check AOV</b> — CPO vs AOV tells you profitability. Low AOV makes CPO look worse than it is.',
+        '<b>Focus on repeat customers</b> — repeat CPO should be near zero; if not, your retention funnel is broken.',
+        '<b>Pause high-CPO SKUs</b> — some products can\'t be profitably advertised; accept that and focus budget elsewhere.',
+        '<b>Raise prices or add shipping charges</b> (carefully) to improve contribution margin.',
+        '<b>Cut bids on expensive placements</b> with poor order conversion.'
+      ]
+    }
   },
 
   // ---------- REVENUE ----------
@@ -995,7 +1256,20 @@ const metrics = [
     calc: '200 × $45 = $9,000',
     result: 'Sales = $9,000',
     why: 'Sales is the numerator of every profitability metric. Without revenue attribution, you can\'t tie ad spend to business outcomes.',
-    benchmark: 'No universal benchmark — it\'s the absolute dollar value driven by ads.'
+    benchmark: 'No universal benchmark — it\'s the absolute dollar value driven by ads.',
+    actions: {
+      low: [
+        '<b>First, diagnose where it\'s breaking</b> — is it clicks, CVR, or AOV? Each has different fixes.',
+        '<b>Scale spend on profitable campaigns</b> if ACOS / ROAS is still in-target.',
+        '<b>Fix tracking</b> — missing pixel fires make sales look lower than reality.',
+        '<b>Push AOV up</b> with bundles or add-ons — multiplier effect on sales without more traffic.'
+      ],
+      high: [
+        '<b>Great — but check efficiency</b>. High sales with poor ROAS mean you\'re buying revenue at a loss.',
+        '<b>Scale further</b> only if ROAS stays within target.',
+        '<b>Launch retention flows</b> — high acquisition volume is worthless without repeat purchase.'
+      ]
+    }
   },
   {
     id: 'roas', name: 'ROAS', full: 'Return on Ad Spend', cat: 'revenue',
@@ -1006,7 +1280,25 @@ const metrics = [
     calc: '$50,000 ÷ $10,000 = 5',
     result: 'ROAS = 5 (or 5:1, or 500%). You earned $5 for every $1 spent.',
     why: 'ROAS is the universal efficiency number. But beware — a high ROAS isn\'t automatically good. If your product margin is only 20%, a 4x ROAS means you\'re breaking even, not profiting.',
-    benchmark: 'eCommerce: 3–5x is healthy. High-margin luxury: 2x can work. Low-margin FMCG: need 7x+. Always cross-check vs product margin.'
+    benchmark: 'eCommerce: 3–5x is healthy. High-margin luxury: 2x can work. Low-margin FMCG: need 7x+. Always cross-check vs product margin.',
+    actions: {
+      low: [
+        '<b>Pause bottom 20% of keywords / placements</b> by ROAS — they\'re almost always the problem.',
+        '<b>Lower bids</b> on high-spend, low-return terms.',
+        '<b>Tighten match types</b> — shift Broad → Phrase / Exact to cut wasted spend.',
+        '<b>Add negative keywords</b> to block irrelevant, money-burning searches.',
+        '<b>Increase AOV</b> — bundles, upsells, free-shipping thresholds.',
+        '<b>Improve CVR</b> — listing and landing-page fixes compound directly into ROAS.',
+        '<b>Exclude converters</b> so you stop showing ads to already-bought customers.',
+        '<b>Refresh creative</b> — fatigued creative drops CTR → drops CVR → drops ROAS.'
+      ],
+      high: [
+        '<b>Scale budget 20% per week</b> — don\'t over-scale and crash efficiency.',
+        '<b>Bid up top-of-search</b> — high ROAS justifies premium placements.',
+        '<b>Expand to lookalikes</b> of buyers for similar returns at scale.',
+        '<b>Suspicious if abnormally high</b> — check for attribution double-counting or brand-term cannibalization.'
+      ]
+    }
   },
   {
     id: 'acos', name: 'ACOS', full: 'Advertising Cost of Sale', cat: 'revenue',
@@ -1017,7 +1309,24 @@ const metrics = [
     calc: '($2,000 ÷ $10,000) × 100 = 20%',
     result: 'ACOS = 20%. Twenty cents of every sale dollar went to ads.',
     why: 'ACOS is easier to reason about than ROAS for many sellers because you can directly compare it to your product margin. If your margin is 30% and ACOS is 20%, you\'re profitable.',
-    benchmark: 'Depends on margin. Break-even ACOS = your product\'s contribution margin %. Target ACOS = below your margin.'
+    benchmark: 'Depends on margin. Break-even ACOS = your product\'s contribution margin %. Target ACOS = below your margin.',
+    actions: {
+      low: [
+        '<b>Scale spend</b> — if ACOS is well below target, you have headroom to invest more.',
+        '<b>Raise bids on top keywords</b> to capture more top-of-search share.',
+        '<b>Expand into new match types / ASIN targeting</b> to find more efficient inventory.',
+        '<b>Push into Sponsored Brands</b> — build long-term brand while ACOS is healthy.'
+      ],
+      high: [
+        '<b>Identify the ACOS killer</b> — pull the Search Term Report, sort by spend desc, find wasteful terms.',
+        '<b>Add search terms with 3× target ACOS as negative keywords.</b>',
+        '<b>Reduce bids by 15–20% on underperforming keywords</b> — then monitor for 7 days.',
+        '<b>Switch Dynamic Up & Down to Down Only</b> if algorithm is overbidding.',
+        '<b>Pause poorly-performing ASINs</b> — not every SKU deserves ad spend.',
+        '<b>Fix the listing</b> — high ACOS with good traffic usually means CVR is weak.',
+        '<b>Review dayparting</b> — certain hours may have 2–3× ACOS of others; block them.'
+      ]
+    }
   },
   {
     id: 'tacos', name: 'TACOS', full: 'Total Advertising Cost of Sale', cat: 'revenue',
@@ -1028,7 +1337,21 @@ const metrics = [
     calc: '($2,000 ÷ $30,000) × 100 = 6.67%',
     result: 'TACOS = 6.67%',
     why: 'TACOS shows whether your ads are lifting the whole business or just cannibalizing organic. If TACOS is falling while total sales rise, your ads are building genuine brand momentum.',
-    benchmark: 'Falling TACOS while revenue grows = healthy brand building. Rising TACOS without growth = problem. Target often 8–15%.'
+    benchmark: 'Falling TACOS while revenue grows = healthy brand building. Rising TACOS without growth = problem. Target often 8–15%.',
+    actions: {
+      low: [
+        '<b>Healthy sign — ads are lifting the whole business.</b>',
+        '<b>Scale the brand-building formats</b> (Sponsored Brands, DSP) that are driving organic halo.',
+        '<b>Reinvest savings into Sponsored Display retargeting</b> to capture more existing demand.'
+      ],
+      high: [
+        '<b>Ads are overly dependent — organic isn\'t growing.</b> Diagnose why your organic rank isn\'t building.',
+        '<b>Shift budget toward upper-funnel formats</b> — Sponsored Brands and DSP typically drive more halo.',
+        '<b>Reduce branded-keyword spend</b> — if you\'re buying clicks that would have been organic, you\'re inflating TACOS.',
+        '<b>Invest in SEO basics</b> — product title, bullets, A+ content, backend keywords.',
+        '<b>Accept higher TACOS temporarily</b> during a launch — 15–25% TACOS is normal while building momentum.'
+      ]
+    }
   },
   {
     id: 'roi', name: 'ROI', full: 'Return on Investment', cat: 'revenue',
@@ -1039,7 +1362,21 @@ const metrics = [
     calc: '(($50,000 − $10,000 − $30,000) ÷ $10,000) × 100 = 100%',
     result: 'ROI = 100%. You doubled every dollar after all costs.',
     why: 'ROI is what CFOs actually care about. ROAS tells you efficiency; ROI tells you profitability. The two can point opposite directions on low-margin products.',
-    benchmark: 'Positive ROI means profitable ads. Above 100% means you\'re earning more than you spent.'
+    benchmark: 'Positive ROI means profitable ads. Above 100% means you\'re earning more than you spent.',
+    actions: {
+      low: [
+        '<b>Revisit product margins</b> — if COGS is >60% of price, no amount of ad optimization saves you.',
+        '<b>Negotiate lower COGS</b> with suppliers or consolidate SKUs.',
+        '<b>Raise prices</b> — small price increases (3–5%) often don\'t hurt CVR but dramatically improve ROI.',
+        '<b>Drop the least profitable SKUs</b> from ads entirely.',
+        '<b>Everything that improves ROAS improves ROI</b> — see ROAS actions.'
+      ],
+      high: [
+        '<b>Scale aggressively</b> — you have real profit runway.',
+        '<b>Reinvest into brand building</b> — DSP, Sponsored Brands, retention.',
+        '<b>Reinvest into product development / stock</b> — don\'t leave growth on the table during high-profit periods.'
+      ]
+    }
   },
   {
     id: 'aov', name: 'AOV', full: 'Average Order Value', cat: 'revenue',
@@ -1050,7 +1387,21 @@ const metrics = [
     calc: '$20,000 ÷ 500 = $40',
     result: 'AOV = $40',
     why: 'Doubling AOV (through bundles, upsells, volume discounts) doubles your ROAS without spending a rupee more on ads. It\'s the highest-leverage growth lever in eCommerce.',
-    benchmark: 'Track over time — trending up is good. Sudden drops suggest promotional cannibalization.'
+    benchmark: 'Track over time — trending up is good. Sudden drops suggest promotional cannibalization.',
+    actions: {
+      low: [
+        '<b>Launch product bundles</b> — 2-pack, 3-pack variants typically lift AOV by 20–40%.',
+        '<b>Add a free-shipping threshold</b> slightly above your current AOV (e.g., AOV $40 → threshold $50).',
+        '<b>Upsell larger sizes</b> — bigger pack sizes usually have better margin too.',
+        '<b>Cross-sell in the listing / cart</b> — complementary products, "frequently bought together".',
+        '<b>Volume discounts</b> — buy 2 save 10%, buy 3 save 15%.',
+        '<b>Advertise higher-ASP products more aggressively</b> — shift ad mix toward premium SKUs.'
+      ],
+      high: [
+        '<b>Keep pushing</b> — every $1 increase in AOV is pure margin.',
+        '<b>Watch CVR carefully</b> — pushing AOV too hard can hurt conversion. Test incremental changes.'
+      ]
+    }
   },
   {
     id: 'ltv', name: 'LTV', full: 'Lifetime Value', cat: 'revenue',
@@ -1061,7 +1412,22 @@ const metrics = [
     calc: '$40 × 3 × 4 = $480',
     result: 'LTV = $480',
     why: 'LTV unlocks higher acquisition spending. If you know a new customer is worth $480 over their lifetime, you can afford to pay more than $40 to acquire them.',
-    benchmark: 'Aim for LTV:CPA ratio of at least 3:1 for healthy unit economics.'
+    benchmark: 'Aim for LTV:CPA ratio of at least 3:1 for healthy unit economics.',
+    actions: {
+      low: [
+        '<b>Build an email / SMS list</b> — retention channels are where LTV is actually earned.',
+        '<b>Launch subscription / replenishment</b> — subscribe & save programs 3–5× LTV.',
+        '<b>Post-purchase flows</b> — welcome series, cross-sell sequence, winback campaign.',
+        '<b>Loyalty program</b> — even basic points systems lift repeat rate by 15–25%.',
+        '<b>Improve product / packaging</b> — a delighted first-time customer becomes a repeat customer.',
+        '<b>Reduce acquisition of wrong-fit customers</b> — discount-hunters and one-time shoppers kill LTV averages.'
+      ],
+      high: [
+        '<b>Raise your acquisition ceiling</b> — if LTV is strong, you can afford more aggressive CPA.',
+        '<b>Shift budget into DSP / brand awareness</b> — high-LTV businesses should invest in brand.',
+        '<b>Segment by cohort</b> — the top 20% of customers usually drive 80% of LTV. Focus acquisition on lookalikes.'
+      ]
+    }
   },
 
   // ---------- VIDEO ----------
@@ -1074,7 +1440,19 @@ const metrics = [
     calc: 'Count of plays meeting threshold',
     result: 'Video Views = 15,000',
     why: 'Raw view count shows scale, but view quality (completion rate) tells you if the message actually landed.',
-    benchmark: 'Don\'t compare view counts across platforms — the definitions differ too much.'
+    benchmark: 'Don\'t compare view counts across platforms — the definitions differ too much.',
+    actions: {
+      low: [
+        '<b>Raise bids</b> — you may be losing auctions for eligible viewers.',
+        '<b>Expand audience / supply</b> — narrow targeting limits views.',
+        '<b>Check creative rejection</b> — videos violating platform policies may be paused.',
+        '<b>Shorter videos get more views</b> — a 6s bumper will drive more views than a 30s pre-roll.'
+      ],
+      high: [
+        '<b>Monitor VCR</b> — high views with low completion = wasted spend on half-watched ads.',
+        '<b>Scale into lookalikes of viewers</b> — they\'ve already self-qualified as interested.'
+      ]
+    }
   },
   {
     id: 'vcr', name: 'VCR', full: 'Video Completion Rate', cat: 'video',
@@ -1085,7 +1463,23 @@ const metrics = [
     calc: '(7,500 ÷ 10,000) × 100 = 75%',
     result: 'VCR = 75%',
     why: 'VCR is a tight measure of creative quality. If people are dropping off early, your hook isn\'t working. Platforms often reward high-VCR creative with cheaper delivery.',
-    benchmark: 'CTV / OTT: 90%+ (non-skippable). YouTube skippable: 20–35%. Social auto-play: 10–25%.'
+    benchmark: 'CTV / OTT: 90%+ (non-skippable). YouTube skippable: 20–35%. Social auto-play: 10–25%.',
+    actions: {
+      low: [
+        '<b>Strengthen the first 3 seconds</b> — the hook is where 80% of drop-off happens.',
+        '<b>Make the brand / product appear in the first 5s</b> — don\'t wait until the reveal.',
+        '<b>Shorten the ad</b> — a 6s bumper almost always out-completes a 30s pre-roll.',
+        '<b>Avoid slow starts, logo splash screens, and text-heavy intros.</b>',
+        '<b>Add captions</b> — 85% of videos on social are watched without sound. No captions = no message.',
+        '<b>Vertical / square format</b> for mobile feeds — horizontal video has much lower VCR.',
+        '<b>Test multiple creatives</b> — VCR variance between creatives can be 2–3×.'
+      ],
+      high: [
+        '<b>Scale into more reach</b> — high VCR = efficient use of every impression.',
+        '<b>Feed the creative into retargeting</b> — completers are warm audiences.',
+        '<b>Use high-VCR creative as your template</b> for future videos.'
+      ]
+    }
   },
   {
     id: 'vtr', name: 'VTR', full: 'View-Through Rate / View-Through Conversions', cat: 'video',
@@ -1096,7 +1490,20 @@ const metrics = [
     calc: '180 VT conversions attributed to impressions',
     result: 'VTR Conversions = 180',
     why: 'View-through conversions matter most for upper-funnel brand ads (video, display, CTV) where clicks are rare but lift is real. Don\'t rely only on last-click attribution.',
-    benchmark: 'Typically 2–5x your click-through conversion volume for display/video campaigns.'
+    benchmark: 'Typically 2–5x your click-through conversion volume for display/video campaigns.',
+    actions: {
+      low: [
+        '<b>Lengthen the attribution window</b> — brand ads drive conversions days, not hours, later.',
+        '<b>Improve creative memorability</b> — distinctive brand assets, clear product shots.',
+        '<b>Verify viewability</b> — you can\'t get view-through from unseen ads.',
+        '<b>Increase frequency to 3–5</b> — one view rarely drives view-through; repeated exposure does.',
+        '<b>Check tracking</b> — view-through pixels are often misconfigured on video campaigns.'
+      ],
+      high: [
+        '<b>Attribute credit properly</b> — make sure view-through is reflected in your ROAS reporting or you\'ll under-invest in brand.',
+        '<b>Invest more in upper-funnel</b> — CTV, online video, display brand campaigns.'
+      ]
+    }
   },
   {
     id: 'cpv', name: 'CPV', full: 'Cost Per View', cat: 'video',
@@ -1107,7 +1514,20 @@ const metrics = [
     calc: '$1,500 ÷ 50,000 = $0.03',
     result: 'CPV = $0.03',
     why: 'CPV aligns cost with attention. Unlike CPM (where you pay for all impressions), CPV ensures you only pay when someone actually watches.',
-    benchmark: 'YouTube TrueView: $0.02–$0.10. TikTok: $0.01–$0.05. Premium CTV: $0.10–$0.30.'
+    benchmark: 'YouTube TrueView: $0.02–$0.10. TikTok: $0.01–$0.05. Premium CTV: $0.10–$0.30.',
+    actions: {
+      low: [
+        '<b>Scale budget</b> — cheap views + strong completion = the sweet spot for video campaigns.',
+        '<b>Verify quality of supply</b> — very cheap CPV can indicate low-quality / non-premium placements.'
+      ],
+      high: [
+        '<b>Improve the first 5 seconds</b> — skippable video costs you only when viewers choose to watch. Better hooks lower CPV.',
+        '<b>Lower max bids</b> — may be overbidding in competitive auctions.',
+        '<b>Broaden placements</b> — restricting to only premium content drives CPV up.',
+        '<b>Test shorter formats</b> — 6s bumpers often have lower CPV than 15–30s ads.',
+        '<b>Refresh creative</b> — high CPV with low engagement signals fatigue.'
+      ]
+    }
   },
 
   // ---------- AMAZON / DSP ----------
@@ -1120,7 +1540,21 @@ const metrics = [
     calc: '(1,800 ÷ 200,000) × 100 = 0.9%',
     result: 'DPVR = 0.9%',
     why: 'DPVR is more meaningful than CTR on Amazon DSP because it captures the browse-then-search behavior that\'s very common in retail advertising.',
-    benchmark: 'Typically 0.3–1.5% on Amazon DSP display depending on audience and creative.'
+    benchmark: 'Typically 0.3–1.5% on Amazon DSP display depending on audience and creative.',
+    actions: {
+      low: [
+        '<b>Shift to higher-intent audiences</b> — In-Market and Lifestyle usually out-DPVR open prospecting.',
+        '<b>Test retargeting audiences</b> — ASIN viewers and category browsers have 3–5× higher DPVR.',
+        '<b>Refresh creative with clearer product imagery and price anchors.</b>',
+        '<b>Use responsive eCommerce creative</b> with product name and price — drives higher intent to click.',
+        '<b>Check the destination ASIN</b> — if the page is weak, DPVR bounces will not lead to conversion anyway.'
+      ],
+      high: [
+        '<b>Scale this audience</b> — DPVR is the best leading indicator of Amazon DSP efficiency.',
+        '<b>Build lookalikes</b> from users who drove DPVs.',
+        '<b>Layer in Sponsored Display retargeting</b> to capture them on the search page too.'
+      ]
+    }
   },
   {
     id: 'ntb', name: 'NTB', full: 'New-to-Brand', cat: 'amazon',
@@ -1131,7 +1565,21 @@ const metrics = [
     calc: '(350 ÷ 500) × 100 = 70%',
     result: 'NTB % = 70%',
     why: 'High NTB% means your ads are genuinely growing the customer base, not just being shown to existing customers who would have bought anyway.',
-    benchmark: 'Sponsored Brands / Sponsored Display typically: 40–75% NTB. Above 50% is strong.'
+    benchmark: 'Sponsored Brands / Sponsored Display typically: 40–75% NTB. Above 50% is strong.',
+    actions: {
+      low: [
+        '<b>Add existing customers as a negative audience</b> on prospecting campaigns — stop paying to reach people who would have bought anyway.',
+        '<b>Shift budget to Sponsored Brands / DSP</b> — these formats naturally drive more NTB than Sponsored Products.',
+        '<b>Move into category keywords and competitor ASIN targeting</b> — both reach fresh audiences.',
+        '<b>Reduce branded-keyword spend</b> — brand terms are mostly existing customers.',
+        '<b>Test new audience segments</b> — In-Market, Lifestyle, and Life Events on DSP.'
+      ],
+      high: [
+        '<b>Great sign — ads are building the customer base.</b>',
+        '<b>Invest in retention</b> — high NTB without repeat purchase wastes acquisition cost. Launch subscribe & save, email flows, etc.',
+        '<b>Scale brand-building formats</b> to compound the NTB pipeline.'
+      ]
+    }
   },
   {
     id: 'atcr', name: 'ATCR', full: 'Add-to-Cart Rate', cat: 'amazon',
@@ -1142,7 +1590,23 @@ const metrics = [
     calc: '(120 ÷ 1,000) × 100 = 12%',
     result: 'ATCR = 12%',
     why: 'Low ATCR often signals listing problems — bad images, unclear value prop, missing reviews, or wrong price. It\'s a mid-funnel diagnostic.',
-    benchmark: 'Amazon: 5–15%. A healthy ATCR paired with low CVR suggests cart-abandonment or checkout friction.'
+    benchmark: 'Amazon: 5–15%. A healthy ATCR paired with low CVR suggests cart-abandonment or checkout friction.',
+    actions: {
+      low: [
+        '<b>Audit the listing</b> — main image, A+ content, bullets, title. This is almost always the fix.',
+        '<b>Check price vs competitors</b> — ATCR crashes when you\'re 15%+ above comparables.',
+        '<b>Strengthen reviews</b> — less than 50 reviews or under 4 stars kills ATCR.',
+        '<b>Check inventory / Buy Box</b> — if you lose the Buy Box, ATCR tanks.',
+        '<b>Improve secondary images</b> — lifestyle shots, size comparisons, infographics.',
+        '<b>Add a coupon or promotion</b> — the "X% off" badge lifts ATCR meaningfully.',
+        '<b>Tighten targeting</b> — if unqualified traffic is reaching the PDP, ATCR drops.'
+      ],
+      high: [
+        '<b>If ATCR is high but CVR is low</b> → the cart-to-checkout step is broken. Not an ad problem.',
+        '<b>Scale spend</b> — high ATCR signals strong product-market fit.',
+        '<b>Build Sponsored Display retargeting</b> on "Cart Abandoners" to recover more conversions.'
+      ]
+    }
   },
   {
     id: 'brand-halo', name: 'Brand Halo', full: 'Halo Sales', cat: 'amazon',
@@ -1153,7 +1617,21 @@ const metrics = [
     calc: 'Halo Sales = $1,200',
     result: 'Halo Sales = $1,200 (on top of the $5,000 direct)',
     why: 'Brand halo reveals the true ROAS of your campaigns. Looking only at the advertised ASIN will chronically underestimate the value your ads create.',
-    benchmark: 'Often 15–40% of direct sales, highly dependent on brand catalog depth.'
+    benchmark: 'Often 15–40% of direct sales, highly dependent on brand catalog depth.',
+    actions: {
+      low: [
+        '<b>Strengthen the Brand Store</b> — a well-built Store turns a single ad click into multi-product browsing.',
+        '<b>Route Sponsored Brands traffic to the Brand Store</b> rather than a product page.',
+        '<b>Use "Frequently Bought Together" and "Customers Also Viewed" ASINs</b> in your catalog — Amazon surfaces them organically post-click.',
+        '<b>Expand catalog breadth</b> — halo is impossible with a one-product brand.',
+        '<b>Cross-link variations</b> and add complementary ASINs to Sponsored Display campaigns.'
+      ],
+      high: [
+        '<b>Report halo in your ROAS</b> — otherwise you\'ll under-value the campaigns driving brand lift.',
+        '<b>Invest in Sponsored Brands and DSP</b> — these typically produce the most halo.',
+        '<b>Use halo sales to justify higher direct-ASIN ACOS</b> to leadership.'
+      ]
+    }
   },
   {
     id: 'win-rate', name: 'Win Rate', full: 'Auction Win Rate', cat: 'amazon',
@@ -1164,7 +1642,22 @@ const metrics = [
     calc: '(40,000 ÷ 1,000,000) × 100 = 4%',
     result: 'Win Rate = 4%',
     why: 'Low win rate = your bid is too low, your creative is being filtered, or your audience is oversaturated. It\'s a diagnostic for scale issues.',
-    benchmark: 'Highly variable — 2–10% on DSP is normal. Below 1% means your bid is uncompetitive.'
+    benchmark: 'Highly variable — 2–10% on DSP is normal. Below 1% means your bid is uncompetitive.',
+    actions: {
+      low: [
+        '<b>Raise base bid 15–25%</b> — the most direct lever.',
+        '<b>Check Max CPM ceiling</b> — if set too tight, the algorithm can\'t compete.',
+        '<b>Verify creative approval</b> — rejected creative means you\'re disqualified from auctions.',
+        '<b>Loosen brand safety filters</b> if set too aggressively — you may be excluded from most inventory.',
+        '<b>Broaden audience</b> — narrow audiences have fewer available impressions.',
+        '<b>Reduce frequency cap</b> — if you\'ve hit the cap on existing users, you can\'t win more auctions for them.'
+      ],
+      high: [
+        '<b>Lower bid gradually</b> — you may be overpaying. Drop 10% and monitor win rate impact.',
+        '<b>Use "market price" bid learning</b> if the DSP supports it — often discovers a cheaper clearing price.',
+        '<b>Very high win rate (>30%) usually means bid is too high for the audience size.</b>'
+      ]
+    }
   }
 ];
 
@@ -1795,7 +2288,7 @@ function renderMetrics(filter = 'all') {
       <div class="metric-full">${m.full}</div>
       <p class="metric-short">${m.short}</p>
       <div class="formula-peek">${m.formula}</div>
-      <div class="tap-hint">Tap to learn →</div>
+      <div class="tap-hint">Tap for example + optimization actions →</div>
     `;
     btn.addEventListener('click', () => openModal(m));
     grid.appendChild(btn);
@@ -1890,6 +2383,45 @@ const modalContent = document.getElementById('modal-content');
 const modalClose = document.getElementById('modal-close');
 
 function openModal(m) {
+  const actionsHtml = m.actions ? `
+    <div class="actions-block">
+      <div class="block-label">⚡ Optimization Playbook</div>
+      ${m.actions.low ? `
+        <div class="action-group">
+          <div class="action-group-head">
+            <span class="action-arrow down">↓</span>
+            <span class="action-group-title">If it's LOW — what to do</span>
+          </div>
+          <ul class="action-list">
+            ${m.actions.low.map(a => `<li>${a}</li>`).join('')}
+          </ul>
+        </div>
+      ` : ''}
+      ${m.actions.high ? `
+        <div class="action-group">
+          <div class="action-group-head">
+            <span class="action-arrow up">↑</span>
+            <span class="action-group-title">If it's HIGH — what to do</span>
+          </div>
+          <ul class="action-list">
+            ${m.actions.high.map(a => `<li>${a}</li>`).join('')}
+          </ul>
+        </div>
+      ` : ''}
+      ${m.actions.shift ? `
+        <div class="action-group">
+          <div class="action-group-head">
+            <span class="action-arrow neutral">⇄</span>
+            <span class="action-group-title">If it SHIFTS suddenly — what to check</span>
+          </div>
+          <ul class="action-list">
+            ${m.actions.shift.map(a => `<li>${a}</li>`).join('')}
+          </ul>
+        </div>
+      ` : ''}
+    </div>
+  ` : '';
+
   modalContent.innerHTML = `
     <span class="badge ${m.cat}" style="display:inline-block;">${catLabels[m.cat]}</span>
     <h3>${m.name}</h3>
@@ -1912,6 +2444,8 @@ function openModal(m) {
       <div class="block-label">Why It Matters</div>
       <div class="why-text">${m.why}</div>
     </div>
+
+    ${actionsHtml}
 
     <div class="benchmark"><span>${m.benchmark}</span></div>
   `;
