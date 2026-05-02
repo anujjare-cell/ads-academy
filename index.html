@@ -769,6 +769,230 @@
     .formula-row { grid-template-columns: 1fr; gap: 4px; }
   }
 
+  /* ---------- AUDIT FLOWCHART ---------- */
+  .audit-phase {
+    margin-bottom: 36px;
+  }
+  .phase-head {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 1px dashed var(--line);
+  }
+  .phase-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--accent);
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .phase-title {
+    font-family: 'Instrument Serif', serif;
+    font-weight: 400;
+    font-size: 24px;
+    color: var(--ink);
+    line-height: 1;
+    margin: 0;
+  }
+  .phase-sub {
+    font-size: 13px;
+    color: var(--ink-3);
+    margin-left: auto;
+  }
+  @media (max-width: 640px) {
+    .phase-head { flex-wrap: wrap; }
+    .phase-sub { margin-left: 0; flex-basis: 100%; }
+  }
+
+  .audit-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 12px;
+    position: relative;
+  }
+
+  .audit-card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 16px 18px;
+    cursor: pointer;
+    transition: all 0.18s ease;
+    text-align: left;
+    font-family: inherit;
+    color: inherit;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-height: 120px;
+  }
+  .audit-card::before {
+    content: "";
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 4px;
+    background: var(--ink-3);
+    transition: background 0.2s;
+  }
+  .audit-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--ink-3);
+    box-shadow: 0 6px 20px -10px rgba(31,26,21,0.18);
+  }
+  .audit-card.setup::before { background: var(--blue); }
+  .audit-card.diagnostic::before { background: var(--amber); }
+  .audit-card.branch::before { background: var(--accent); }
+  .audit-card.audit::before { background: var(--green); }
+  .audit-card.action::before { background: var(--accent); }
+  .audit-card.follow::before { background: var(--ink-2); }
+
+  .audit-card .step-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    font-weight: 500;
+  }
+  .audit-card.setup .step-tag { color: var(--blue); }
+  .audit-card.diagnostic .step-tag { color: var(--amber); }
+  .audit-card.branch .step-tag { color: var(--accent); }
+  .audit-card.audit .step-tag { color: var(--green); }
+  .audit-card.action .step-tag { color: var(--accent); }
+  .audit-card.follow .step-tag { color: var(--ink-2); }
+
+  .audit-card .step-title {
+    font-family: 'Instrument Serif', serif;
+    font-size: 20px;
+    line-height: 1.15;
+    color: var(--ink);
+    margin: 0;
+  }
+  .audit-card .step-preview {
+    font-size: 13px;
+    color: var(--ink-2);
+    line-height: 1.45;
+    margin: 0;
+    flex: 1;
+  }
+  .audit-card .tap-link {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    color: var(--ink-3);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+
+  /* Diamond styling for diagnostic */
+  .diagnostic-wrap {
+    background: linear-gradient(135deg, var(--amber-soft) 0%, transparent 100%);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 18px;
+    margin-bottom: 12px;
+  }
+  .diagnostic-wrap .audit-card {
+    background: var(--card);
+    border-color: var(--amber);
+  }
+  .diagnostic-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-top: 14px;
+    margin-bottom: 8px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .diagnostic-label::before,
+  .diagnostic-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--line);
+  }
+
+  /* Audit modal styling reuses metric modal but with branded list */
+  .audit-section {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 12px;
+  }
+  .audit-section-title {
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 10px;
+    font-size: 14px;
+  }
+  .audit-section ul {
+    margin: 0;
+    padding-left: 20px;
+    color: var(--ink-2);
+  }
+  .audit-section ul li {
+    margin-bottom: 6px;
+    line-height: 1.55;
+    font-size: 14px;
+  }
+  .audit-section ul ul {
+    margin-top: 6px;
+    padding-left: 18px;
+  }
+  .audit-issue {
+    background: var(--accent-soft);
+    color: var(--accent);
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 13.5px;
+    margin-bottom: 14px;
+    line-height: 1.5;
+  }
+  .audit-issue b { font-weight: 600; }
+
+  .audit-intro {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 20px 22px;
+    margin-bottom: 28px;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  .audit-intro-icon {
+    flex-shrink: 0;
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Instrument Serif', serif;
+    font-size: 22px;
+    font-style: italic;
+  }
+  .audit-intro p {
+    margin: 0;
+    color: var(--ink-2);
+    font-size: 14px;
+    line-height: 1.55;
+  }
+  .audit-intro p b { color: var(--ink); }
+
   /* footer */
   .footer-note {
     margin-top: 40px;
@@ -801,7 +1025,7 @@
           <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/>
           <path d="m21 21-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
         </svg>
-        <input type="text" class="search-input" id="search" placeholder="Search any topic — TACOS, Frequency Cap, Audiences, ROAS…" autocomplete="off" />
+        <input type="text" class="search-input" id="search" placeholder="Search any topic — TACOS, Frequency Cap, Audit, Bidding…" autocomplete="off" />
         <button class="search-clear" id="search-clear" aria-label="Clear search">✕</button>
       </div>
       <div class="search-results" id="search-results" role="listbox"></div>
@@ -811,6 +1035,7 @@
       <button class="tab active" data-tab="metrics">Metrics</button>
       <button class="tab" data-tab="dsp">DSP</button>
       <button class="tab" data-tab="sponsored">Sponsored Ads</button>
+      <button class="tab" data-tab="audit">Audit Playbook</button>
       <button class="tab" data-tab="formulas">Formula Cheat Sheet</button>
     </nav>
   </div>
@@ -856,10 +1081,26 @@
     <div id="sponsored-lessons"></div>
   </section>
 
+  <!-- ============ AUDIT PLAYBOOK ============ -->
+  <section class="view" id="audit">
+    <div class="section-head">
+      <div class="kicker">04 — Audit Playbook</div>
+      <h2>Comprehensive Amazon Ads audit process.</h2>
+      <p>A 10-step framework for auditing any Amazon advertising account end-to-end. Follow it sequentially: foundational checks first, performance diagnostic in the middle, deep audits and action steps at the end. Tap any step to see its full checklist.</p>
+    </div>
+
+    <div class="audit-intro">
+      <div class="audit-intro-icon">i</div>
+      <p>This playbook is structured in <b>five phases</b>: setup checks (steps 1–3), a performance diagnostic with three branches (step 4), deep channel audits (steps 5–7), data-driven action (steps 8–9), and follow-up (step 10). Color-coded for navigation.</p>
+    </div>
+
+    <div id="audit-flowchart"></div>
+  </section>
+
   <!-- ============ FORMULAS ============ -->
   <section class="view" id="formulas">
     <div class="section-head">
-      <div class="kicker">04 — Formulas</div>
+      <div class="kicker">05 — Formulas</div>
       <h2>Every formula, one place.</h2>
       <p>Bookmark this page. It's your quick reference for every ad math calculation you'll ever need.</p>
     </div>
@@ -2263,6 +2504,299 @@ const sponsoredLessons = [
 ];
 
 /* =============================================================
+   DATA — AUDIT PLAYBOOK
+   ============================================================= */
+const auditPhases = [
+  {
+    phase: 'Phase 1',
+    title: 'Setup & Foundational Checks',
+    sub: 'Before optimizing anything, make sure the foundation is solid.',
+    steps: [
+      {
+        id: 'audit-start', tag: 'Start', cls: 'setup',
+        title: 'Define Audit Scope & Goals',
+        preview: 'Pick a clear objective — improve ROAS, increase sales, find wasted spend.',
+        sections: [
+          {
+            title: 'What this step is about',
+            items: [
+              'Every audit begins with a clearly defined goal. Without one, you\'ll wander.',
+              'Common audit goals: improve ROAS, increase sales, find wasted spend.',
+              'Pick one primary outcome before touching any campaign data.'
+            ]
+          }
+        ]
+      },
+      {
+        id: 'audit-1', tag: 'Step 1', cls: 'setup',
+        title: 'Retain Readiness Check: Is the Product Ready for Traffic?',
+        preview: 'Audit the product detail page and reviews before sending paid traffic.',
+        sections: [
+          {
+            title: 'Examine ASINs for 7 PDP aspects',
+            items: [
+              'High-quality images',
+              'Detailed title, bullet points, full description, enhanced brand content/A+ A+ content',
+              'Price, & Inventory status'
+            ]
+          },
+          {
+            title: 'Analyze recent customer reviews',
+            items: [
+              'Identify any negative reviews or trends that herm conversion.',
+              'Ensure enough reviews exist.'
+            ]
+          }
+        ]
+      },
+      {
+        id: 'audit-2', tag: 'Step 2', cls: 'setup',
+        title: 'Campaign Structure & Settings Review',
+        preview: 'Validate naming, dates, bid strategy, ad groups, and portfolios.',
+        sections: [
+          {
+            title: 'Review campaign settings against standards',
+            items: [
+              'Check Name conventions',
+              'Start/End dates',
+              'Bidding strategy (e.g., dynamic bidding types).',
+              'Ad Group setup'
+            ]
+          },
+          {
+            title: 'Other checks',
+            items: [
+              'Verify Portfolios use.',
+              'Ensure segmentation by product category or goal.'
+            ]
+          }
+        ]
+      },
+      {
+        id: 'audit-3', tag: 'Step 3', cls: 'setup',
+        title: 'Bid, Budget & Keyword Alignment',
+        preview: 'Are bids competitive, budgets sufficient, and keywords still relevant?',
+        sections: [
+          {
+            title: 'Bid alignment',
+            items: [
+              'Compare current hids with CPC estimates and historical performance.'
+            ]
+          },
+          {
+            title: 'Assess total daily budgets',
+            items: [
+              'Are campaigns capped?',
+              'Is funding sufficient for high-performing targets?'
+            ]
+          },
+          {
+            title: 'Exaluate keyword relevance',
+            items: [
+              'Remove irrelevant terms, find new related terms.',
+              'Review match types.',
+              'Check negative keyword lists.'
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    phase: 'Phase 2',
+    title: 'Performance Diagnostic',
+    sub: 'Find the bottleneck, then branch into the right fix.',
+    steps: [
+      {
+        id: 'audit-4', tag: 'Step 4', cls: 'diagnostic',
+        title: 'Performance Metrics Diagnostic',
+        preview: 'Identify bottlenecks in the advertising funnel — then follow one of three branches below.',
+        sections: [
+          {
+            title: 'What this step does',
+            items: [
+              'Identify bottlenocks in the advertising funnel.',
+              'Based on which metric is failing, you\'ll branch into one of three diagnostic paths shown below.'
+            ]
+          }
+        ]
+      },
+      {
+        id: 'audit-4a', tag: 'Branch A', cls: 'branch',
+        title: 'If Impressions Are Low',
+        preview: 'Limited viability — you\'re not winning auctions.',
+        issue: 'Limited vilability, not winning actions.',
+        sections: [
+          {
+            title: 'Actions',
+            items: [
+              'Review Keywords (too narrow?)',
+              'Increase Ride',
+              'Check Budget',
+              'Optimize Targeting'
+            ]
+          }
+        ]
+      },
+      {
+        id: 'audit-4b', tag: 'Branch B', cls: 'branch',
+        title: 'If Impressions Good, Clicks Are Low',
+        preview: 'Winning auctions but ads aren\'t attracting customers.',
+        issue: 'Winning actions but not attracting customers.',
+        sections: [
+          {
+            title: 'Actions',
+            items: [
+              'Review Ad Creatives:',
+              'Check Horo Image (Is it compelling?)',
+              'Title (is it clear & clickable?)',
+              'Star Rating/Review Count'
+            ]
+          }
+        ]
+      },
+      {
+        id: 'audit-4c', tag: 'Branch C', cls: 'branch',
+        title: 'If Impressions & Clicks Are Good, Conversion Rate (CVR) Low',
+        preview: 'The PDP is failing to close the sale.',
+        issue: 'Product Detail Page (PDP) fails to sell.',
+        sections: [
+          {
+            title: 'Actions',
+            items: [
+              'Analyze pricing (competitiveness)',
+              'Deep dive PDP elements (A+, videos, benefits, clarity)',
+              'Analyze competitor offers on PDP',
+              'Evaluate \'Look and Feel\' consistency with ad'
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    phase: 'Phase 3',
+    title: 'Deep Channel Audits',
+    sub: 'Drill into each channel — Sponsored Brands, Sponsored Display, DSP, and SERP.',
+    steps: [
+      {
+        id: 'audit-5', tag: 'Step 5', cls: 'audit',
+        title: 'Channel-Specific Audits (SB/SBV)',
+        preview: 'Sponsored Brands, Video, and Sponsored Display deep-dive.',
+        sections: [
+          {
+            title: 'Sponsored Brands (SB) / Video (SBV)',
+            items: [
+              'Verify Storefront landing page link is accurate.',
+              'Check custom creatives, headlines, & video performance.',
+              'Assess brand defense vs compiecting.'
+            ]
+          },
+          {
+            title: 'Sponsored Display (SD)',
+            items: [
+              'Evoluate audience selections (views remarketing, purchases).',
+              'Check product targeting strategies.',
+              'Review placement performance (e.g., top of POP).'
+            ]
+          }
+        ]
+      },
+      {
+        id: 'audit-6', tag: 'Step 6', cls: 'audit',
+        title: 'DSP Audit (Demand-Side Platform)',
+        preview: 'Audiences, line items, creatives, flight dates, and frequency caps.',
+        sections: [
+          {
+            title: 'DSP audit checklist',
+            items: [
+              'Analyze Audience Inclusions & Exclusions',
+              'Check Line from settings & budgets.',
+              'Review Creatives (display/video).',
+              'Confirm Order settings & Flight dates.',
+              'Assess cross-device frequency caps.'
+            ]
+          }
+        ]
+      },
+      {
+        id: 'audit-7', tag: 'Step 7', cls: 'audit',
+        title: 'Amazon Search Result Pages Analysis',
+        preview: 'Who\'s winning the top of search? How does your placement compare?',
+        sections: [
+          {
+            title: 'SERP analysis',
+            items: [
+              'Analyze Search Engine Results Pages for key keywords: Who is winning the top-of-search placements?',
+              'Compare your ads and organic rankings with competitors. Look for gaps or threats. Note bid strategies.'
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    phase: 'Phase 4',
+    title: 'Action & Implementation',
+    sub: 'Translate findings into a concrete change plan, then execute carefully.',
+    steps: [
+      {
+        id: 'audit-8', tag: 'Step 8', cls: 'action',
+        title: 'Data-Driven Optimization Strategy',
+        preview: 'Define changes, prioritize, and log everything.',
+        sections: [
+          {
+            title: 'Strategy steps',
+            items: [
+              'Define changes based on audit findings.',
+              'Focus on low-performing targets first. Create an A/B test plan.',
+              'Establish a "RECORD OF CHANGES" log (e.g., in a sheet). Track dates, reasons, and results.'
+            ]
+          }
+        ]
+      },
+      {
+        id: 'audit-9', tag: 'Step 9', cls: 'action',
+        title: 'Implement Changes (with Caution)',
+        preview: 'Manual edits only, bulk uploads for scale, never touch auto campaigns.',
+        sections: [
+          {
+            title: 'Implementation rules',
+            items: [
+              'Perform manual changes in Seller Central / Advertising Console. Limit edits to manual campaigns.',
+              'Use bulk upload files for large changes.',
+              'Do not edit destiny campaigns in Amazon',
+              'Edit only manual campaigns with proper record of changes made in a sheet.'
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    phase: 'Phase 5',
+    title: 'Follow-Up',
+    sub: 'Validate the impact and set the cadence for ongoing review.',
+    steps: [
+      {
+        id: 'audit-10', tag: 'Step 10', cls: 'follow',
+        title: 'Follow-Up & Consultation',
+        preview: 'Re-check performance, escalate if needed, set a review cadence.',
+        sections: [
+          {
+            title: 'Follow-up actions',
+            items: [
+              'If performance issues persist, connect with live Amazon Advertising support agents for platform suggestions.',
+              'Set future review cadences. Evaluate the success of implementations.'
+            ]
+          }
+        ]
+      }
+    ]
+  }
+];
+
+/* =============================================================
    RENDERING
    ============================================================= */
 const catLabels = {
@@ -2348,6 +2882,91 @@ sponsoredLessons.forEach((l, i) => {
   `;
   spWrap.appendChild(el);
 });
+
+/* ---------- Audit Playbook flowchart ---------- */
+const auditWrap = document.getElementById('audit-flowchart');
+auditPhases.forEach(phase => {
+  const phaseDiv = document.createElement('div');
+  phaseDiv.className = 'audit-phase';
+  phaseDiv.innerHTML = `
+    <div class="phase-head">
+      <span class="phase-num">${phase.phase}</span>
+      <h3 class="phase-title">${phase.title}</h3>
+      <span class="phase-sub">${phase.sub}</span>
+    </div>
+  `;
+
+  // Diagnostic phase gets special treatment with a wrapper around step 4 + branches
+  if (phase.steps[0] && phase.steps[0].id === 'audit-4') {
+    const diag = document.createElement('div');
+    diag.className = 'diagnostic-wrap';
+
+    // The main diagnostic card
+    const mainGrid = document.createElement('div');
+    mainGrid.className = 'audit-grid';
+    const mainCard = makeAuditCard(phase.steps[0]);
+    mainGrid.appendChild(mainCard);
+    diag.appendChild(mainGrid);
+
+    // Branches label
+    const branchLabel = document.createElement('div');
+    branchLabel.className = 'diagnostic-label';
+    branchLabel.innerHTML = '<span>Three diagnostic branches</span>';
+    diag.appendChild(branchLabel);
+
+    // Branch cards
+    const branchGrid = document.createElement('div');
+    branchGrid.className = 'audit-grid';
+    phase.steps.slice(1).forEach(step => {
+      branchGrid.appendChild(makeAuditCard(step));
+    });
+    diag.appendChild(branchGrid);
+
+    phaseDiv.appendChild(diag);
+  } else {
+    const grid = document.createElement('div');
+    grid.className = 'audit-grid';
+    phase.steps.forEach(step => {
+      grid.appendChild(makeAuditCard(step));
+    });
+    phaseDiv.appendChild(grid);
+  }
+
+  auditWrap.appendChild(phaseDiv);
+});
+
+function makeAuditCard(step) {
+  const btn = document.createElement('button');
+  btn.className = `audit-card ${step.cls}`;
+  btn.setAttribute('data-audit-id', step.id);
+  btn.innerHTML = `
+    <span class="step-tag">${step.tag}</span>
+    <h4 class="step-title">${step.title}</h4>
+    <p class="step-preview">${step.preview}</p>
+    <span class="tap-link">Tap for full checklist →</span>
+  `;
+  btn.addEventListener('click', () => openAuditModal(step));
+  return btn;
+}
+
+function openAuditModal(step) {
+  const sectionsHtml = step.sections.map(sec => `
+    <div class="audit-section">
+      <div class="audit-section-title">${sec.title}</div>
+      <ul>${sec.items.map(it => `<li>${it}</li>`).join('')}</ul>
+    </div>
+  `).join('');
+
+  modalContent.innerHTML = `
+    <span class="badge ${step.cls === 'branch' ? 'revenue' : (step.cls === 'diagnostic' ? 'amazon' : (step.cls === 'audit' ? 'conversion' : (step.cls === 'action' ? 'revenue' : 'awareness')))}" style="display:inline-block;">${step.tag}</span>
+    <h3>${step.title}</h3>
+    <div class="sub">From the Comprehensive Amazon Ads Audit Process</div>
+    ${step.issue ? `<div class="audit-issue"><b>Potential issue:</b> ${step.issue}</div>` : ''}
+    ${sectionsHtml}
+  `;
+  modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
 
 /* ---------- Formulas cheat sheet ---------- */
 const fList = document.getElementById('formula-list');
@@ -2495,7 +3114,18 @@ const searchIndex = [
     preview: l.preview,
     haystack: (l.title + ' ' + l.preview + ' ' + stripHtml(l.body)).toLowerCase(),
     section: 'Sponsored Ads'
-  }))
+  })),
+  ...auditPhases.flatMap(phase => phase.steps.map(step => ({
+    type: 'audit',
+    id: step.id,
+    title: step.title,
+    subtitle: step.tag,
+    preview: step.preview,
+    haystack: (step.title + ' ' + step.preview + ' ' + (step.issue || '') + ' ' +
+      step.sections.map(s => s.title + ' ' + s.items.join(' ')).join(' ')).toLowerCase(),
+    section: 'Audit Playbook · ' + phase.phase,
+    _step: step
+  })))
 ];
 
 const searchInput = document.getElementById('search');
@@ -2615,6 +3245,12 @@ function handleSearchResult(result) {
     window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
     const m = metrics.find(x => x.id === result.id);
     if (m) setTimeout(() => openModal(m), 80);
+  } else if (result.type === 'audit') {
+    switchTab('audit');
+    window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
+    setTimeout(() => {
+      if (result._step) openAuditModal(result._step);
+    }, 80);
   } else if (result.type === 'dsp' || result.type === 'sponsored') {
     switchTab(result.type === 'dsp' ? 'dsp' : 'sponsored');
     setTimeout(() => {
